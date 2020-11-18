@@ -1,259 +1,899 @@
-swagger: 2.0
+openapi: 3.0.0
 info:
   title: Custody API V1
   version: 1.1.0
-host: api.custody.coinbase.com
-schemes:
-- https
 paths:
   /api/v1/addresses:
     get:
       tags:
-      - Addresses
+        - Addresses
       summary: Gets a list of addresses
-      description: Get a list of all crypto addresses associated with the account. For most use cases, you should use the Wallets endpoint to see the current cold address and balance for all wallets. The response value can be filtered by query parameters.<aside class="notice">Balances are returned as the integer value of the native units. To get the standard decimal representation, you will need to retrieve the number of decimals for the currency from the Currencies endpoint. Divide the balance by 10^decimals.</aside>
+      description: "Get a list of all crypto addresses associated with the account. For most
+        use cases, you should use the Wallets endpoint to see the current cold
+        address and balance for all wallets. The response value can be filtered
+        by query parameters.
+        Balances are returned as the
+        integer value of the native units. To get the standard decimal
+        representation, you will need to retrieve the number of decimals for the
+        currency from the Currencies endpoint. Divide the balance by
+        10^decimals."
+
       operationId: GetAddresses
-      produces:
-      - application/json
       parameters:
-      - type: string
-        name: wallet_id
-        in: query
-        description: The wallet id to filter by
-      - type: string
-        name: currency
-        in: query
-        description: The type of currency to filter
-      - type: string
-        name: state
-        in: query
-        description: The state of the address to filter
-        enum:
-        - cold
-        - restore_in_progress
-        - restored
-      responses:
-        200:
-          description: filtered addresses by wallet_id
+        - name: wallet_id
+          in: query
+          description: The wallet id to filter by
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                description: Array of addresses
-                items:
-                  $ref: '#/definitions/address'
-          examples:
+            type: string
+        - name: currency
+          in: query
+          description: The type of currency to filter
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: The state of the address to filter
+          schema:
+            type: string
+            enum:
+              - cold
+              - restore_in_progress
+              - restored
+      responses:
+        "200":
+          description: filtered addresses by wallet_id
+          content:
             application/json:
-              data:
-              - address: fake_eth_cold_address
-                state: cold
-                balance: 0
-                blockchain_link: https://etherscan.io/address/fake_eth_cold_address
-                created_at: 2020-07-22T18:55:22.0120000Z
-                updated_at: 2020-07-22T18:55:22.0120000Z
-                currency: ETH
-                balance_whole_units: 0.0
-              - address: fake_btc_cold_address
-                state: cold
-                balance: 0
-                blockchain_link: https://live.blockcypher.com/btc/address/fake_btc_cold_address
-                created_at: 2020-07-22T18:55:21.9450000Z
-                updated_at: 2020-07-22T18:55:21.9450000Z
-                currency: BTC
-                balance_whole_units: 0.0
-              pagination:
-                before: fake_eth_cold_address
-                after: fake_btc_cold_address
-        401:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Array of addresses
+                    items:
+                      $ref: "#/components/schemas/address"
+              examples:
+                response:
+                  value:
+                    data:
+                      - address: fake_eth_cold_address
+                        state: cold
+                        balance: 0
+                        blockchain_link: https://etherscan.io/address/fake_eth_cold_address
+                        created_at: 2020-07-22T18:55:22.0120000Z
+                        updated_at: 2020-07-22T18:55:22.0120000Z
+                        currency: ETH
+                        balance_whole_units: 0
+                      - address: fake_btc_cold_address
+                        state: cold
+                        balance: 0
+                        blockchain_link: https://live.blockcypher.com/btc/address/fake_btc_cold_address
+                        created_at: 2020-07-22T18:55:21.9450000Z
+                        updated_at: 2020-07-22T18:55:21.9450000Z
+                        currency: BTC
+                        balance_whole_units: 0
+                    pagination:
+                      before: fake_eth_cold_address
+                      after: fake_btc_cold_address
+        "401":
           description: unauthorized with bad passphrase
       security:
-      - ApiKey: []
-        Passphrase: []
-  /api/v1/addresses/{address}:
+        - ApiKey: []
+          Passphrase: []
+  "/api/v1/addresses/{address}":
     get:
       tags:
-      - Addresses
+        - Addresses
       summary: Gets a single address
-      description: Get information about a single crypto address. Use this endpoint when you know the specific address you want to retrieve.<aside class="notice"> Addresses and wallets differ slightly. Coinbase Custody considers addresses one-time use. However, a wallet can be used indefinitely. Coinbase Custody will automatically rotate the underlying cold address associated with the wallet after each withdrawal to keep your funds secure.</aside>
+      description: "Get information about a single crypto address. Use this endpoint when
+        you know the specific address you want to retrieve.
+ Addresses and wallets differ slightly. Coinbase Custody
+        considers addresses one-time use. However, a wallet can be used
+        indefinitely. Coinbase Custody will automatically rotate the underlying
+        cold address associated with the wallet after each withdrawal to keep
+        your funds secure."
+
       operationId: GetAddressById
-      produces:
-      - application/json
       parameters:
-      - type: string
-        name: address
-        in: path
-        required: true
-        description: The crypto address to retrieve
-      responses:
-        200:
-          description: found address
+        - name: address
+          in: path
+          required: true
+          description: The crypto address to retrieve
           schema:
-            $ref: '#/definitions/address'
-          examples:
+            type: string
+      responses:
+        "200":
+          description: found address
+          content:
             application/json:
-              address: fake_btc_cold_address
-              state: cold
-              balance: 0
-              blockchain_link: https://live.blockcypher.com/btc/address/fake_btc_cold_address
-              created_at: 2020-07-22T18:55:23.5810000Z
-              updated_at: 2020-07-22T18:55:23.5810000Z
-              currency: BTC
-              balance_whole_units: 0.0
-        401:
+              schema:
+                $ref: "#/components/schemas/address"
+              examples:
+                response:
+                  value:
+                    address: fake_btc_cold_address
+                    state: cold
+                    balance: 0
+                    blockchain_link: https://live.blockcypher.com/btc/address/fake_btc_cold_address
+                    created_at: 2020-07-22T18:55:23.5810000Z
+                    updated_at: 2020-07-22T18:55:23.5810000Z
+                    currency: BTC
+                    balance_whole_units: 0
+        "401":
           description: unauthorized with bad passphrase
-        404:
+        "404":
           description: address not found
       security:
-      - ApiKey: []
-        Passphrase: []
+        - ApiKey: []
+          Passphrase: []
   /api/v1/currencies:
     get:
       tags:
-      - Currencies
+        - Currencies
       summary: Allows all API keys
-      description: Retrieve the list of available currencies for your organization. The response is filterable by query parameters.
+      description: Retrieve the list of available currencies for your organization. The
+        response is filterable by query parameters.
       operationId: GetCurrencies
-      produces:
-      - application/json
       parameters:
-      - type: string
-        name: symbol
-        in: query
-        description: The currency symbol to filter
-      - type: string
-        name: limit
-        in: query
-        description: The number of symbols to retrieve
-      responses:
-        200:
-          description: with READ_WRITE key
+        - name: symbol
+          in: query
+          description: The currency symbol to filter
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                description: Array of currencies
-                items:
-                  $ref: '#/definitions/currency'
-          examples:
+            type: string
+        - name: limit
+          in: query
+          description: The number of symbols to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: with READ_WRITE key
+          content:
             application/json:
-              data:
-              - name: Bitcoin
-                decimals: 8
-                symbol: BTC
-              - name: Bitcoin Cash
-                decimals: 8
-                symbol: BCH
-              pagination:
-                before: btc
-                after: bch
-        401:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Array of currencies
+                    items:
+                      $ref: "#/components/schemas/currency"
+              examples:
+                response:
+                  value:
+                    data:
+                      - name: Bitcoin
+                        decimals: 8
+                        symbol: BTC
+                      - name: Bitcoin Cash
+                        decimals: 8
+                        symbol: BCH
+                    pagination:
+                      before: btc
+                      after: bch
+        "401":
           description: unauthorized with bad passphrase
       security:
-      - ApiKey: []
-        Passphrase: []
-  /api/v1/currencies/{symbol}:
+        - ApiKey: []
+          Passphrase: []
+  "/api/v1/currencies/{symbol}":
     get:
       tags:
-      - Currencies
+        - Currencies
       summary: Gets a single currency by symbol
       description: Retrieve information about single currency.
       operationId: GetCurrencyById
-      produces:
-      - application/json
       parameters:
-      - type: string
-        name: symbol
-        in: path
-        required: true
-        description: The symbol of the currency to retrieve
-      responses:
-        200:
-          description: found currency
+        - name: symbol
+          in: path
+          required: true
+          description: The symbol of the currency to retrieve
           schema:
-            $ref: '#/definitions/currency'
-          examples:
+            type: string
+      responses:
+        "200":
+          description: found currency
+          content:
             application/json:
-              name: Bitcoin
-              decimals: 8
-              symbol: BTC
-        401:
+              schema:
+                $ref: "#/components/schemas/currency"
+              examples:
+                response:
+                  value:
+                    name: Bitcoin
+                    decimals: 8
+                    symbol: BTC
+        "401":
           description: unauthorized with bad passphrase
-        404:
+        "404":
           description: currency not found
       security:
-      - ApiKey: []
-        Passphrase: []
+        - ApiKey: []
+          Passphrase: []
   /api/v1/fake:
     get:
-      tags: 
+      tags:
       - Fake
       summary: Catches invalid route
       operationId: fake
       responses:
-        404:
+        "404":
           description: hits catch all
       security:
-      - ApiKey: []
-        Passphrase: []
+        - ApiKey: []
+          Passphrase: []
   /api/v1/transactions:
     get:
       tags:
-      - Transactions
+        - Transactions
       summary: Gets a list of transactions
-      description: Retrieve a list of the transactions from your organization. The response is filterable by query parameters.<aside class="notice">Some actions will create multiple related transactions. For example, activating governance will create a `withdrawal` then a `proxy_deposit`, while deactivating governance will create a `proxy_withdrawal` then a `deposit`. The net wallet balance change will be near zero (less fees).</aside><aside class="notice">Coinbase Custody will always keep your funds secure. Deposits to a restored address will create a `sweep_withdrawal` from the restored address, and a corresponding `sweep_deposit` to the cold address. One on-chain movement represented by two balance-affecting transactions.</aside><aside class='notice'> Coinbase Custody will pay the network fee for withdrawals of currencies listed on Coinbase Pro. On withdrawal approval, a `coinbase_deposit` for the fee amount will be credited to the source wallet and applied to the final withdrawal.</aside>
+      description: "Retrieve a list of the transactions from your organization. The response
+        is filterable by query parameters.
+        Some actions
+        will create multiple related transactions. For example, activating
+        governance will create a `withdrawal` then a `proxy_deposit`, while
+        deactivating governance will create a `proxy_withdrawal` then a
+        `deposit`. The net wallet balance change will be near zero (less
+        fees).
+        Coinbase Custody will always keep
+        your funds secure. Deposits to a restored address will create a
+        `sweep_withdrawal` from the restored address, and a corresponding
+        `sweep_deposit` to the cold address. One on-chain movement represented
+        by two balance-affecting transactions.
+
+        Coinbase Custody will pay the network fee for withdrawals of currencies
+        listed on Coinbase Pro. On withdrawal approval, a `coinbase_deposit` for
+        the fee amount will be credited to the source wallet and applied to the
+        final withdrawal."
+
       operationId: GetTransactions
-      produces:
-      - application/json
       parameters:
-      - type: string
-        name: currency
-        in: query
-        description: The type of currency to filter
-      - type: string
-        name: state
-        in: query
-        description: The state of transactions to filter
-      - type: string
-        name: type
-        in: query
-        description: The type of transactions to filter
-      - type: string
-        name: wallet_id
-        in: query
-        description: The wallet id to filter
-      - type: string
-        name: start_time
-        in: query
-        description: The start time to filter
-      - type: string
-        name: end_time
-        in: query
-        description: The end time to filter
-      - type: string
-        name: human_id
-        in: query
-        description: The human id to filter
-      responses:
-        200:
-          description: filtered by human id
+        - name: currency
+          in: query
+          description: The type of currency to filter
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                description: Array of transactions
-                items:
-                  $ref: '#/definitions/transaction'
-          examples:
+            type: string
+        - name: state
+          in: query
+          description: The state of transactions to filter
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: The type of transactions to filter
+          schema:
+            type: string
+        - name: wallet_id
+          in: query
+          description: The wallet id to filter
+          schema:
+            type: string
+        - name: start_time
+          in: query
+          description: The start time to filter
+          schema:
+            type: string
+        - name: end_time
+          in: query
+          description: The end time to filter
+          schema:
+            type: string
+        - name: human_id
+          in: query
+          description: The human id to filter
+          schema:
+            type: string
+      responses:
+        "200":
+          description: filtered by human id
+          content:
             application/json:
-              data:
+              schema:
+                $ref: "#/components/schemas/transactions"
+        "401":
+          description: unauthorized with bad passphrase
+      security:
+        - ApiKey: []
+          Passphrase: []
+    post:
+      tags:
+        - Transactions
+      summary: Creates a new withdrawal transaction (beta)
+      description: Request a new withdrawal transaction be created from one of your
+        organization's wallets. This request is subject to in-app consensus from
+        your organization's signatories before it can be fulfilled.
+      operationId: CreateTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                destination: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+                source: 93cd4918-82bf-4a04-b58e-c94e36d0d817
+                whole_amount: 10
+              required:
+                - whole_amount
+                - destination
+                - source
+              properties:
+                source:
+                  type: string
+                  description: The source wallet id for the transaction
+                currency:
+                  type: string
+                  description: A fiat currency symbol such as USD. If provided Custody will
+                    automatically convert the amount value into crypto units
+                whole_amount:
+                  type: string
+                  description: The amount of the transaction in whole units (e.g. "1.01")
+                destination:
+                  type: string
+                  description: The destination address of the transaction
+                account_identifier:
+                  type: string
+                  description: The account identifier of the transaction (for example
+                    destination tag or memo value)
+        description: The create transaction payload
+      responses:
+        "201":
+          description: with READ_WRITE key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/transaction_request"
+              examples:
+                response:
+                  value:
+                    destination: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+                    activity_id: 4bc6d4aa-0988-428a-95f6-f6dad01c2d89
+                    currency: BTC
+                    approval_url: http://custody.coinbase.com/activity/4bc6d4aa-0988-428a-95f6-f6dad01c2d89
+                    whole_amount: 0.001
+                    fee: 0.0000817
+                    source: 14J9RE7ieGf2ysmtHCEwjEnVSrundEqvLP
+        "400":
+          description: invalid account identifier format
+        "401":
+          description: unauthorized with bad passphrase
+      security:
+        - ApiKey: []
+          Passphrase: []
+  "/api/v1/transactions/{id}":
+    get:
+      tags:
+        - Transactions
+      summary: Gets a single transaction by id
+      description: Retrieve information about a single transaction from your organization.
+      operationId: GetTransactionById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The transaction id to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: found transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/wallet"
+              examples:
+                response:
+                  value:
+                    id: 9ea39fe5-eea0-4b09-ac98-4fff3f72a6ed
+                    type: deposit
+                    state: imported
+                    amount: 2000
+                    destination: null
+                    created_at: 2020-07-20T18:55:54.6140000Z
+                    updated_at: 2020-07-22T18:55:54.6460000Z
+                    wallet_id: 40178291-bfa5-438f-a9b2-294a2e54c839
+                    amount_whole_units: 0.00002
+                    currency: BTC
+                    fee: 0
+                    hashes:
+                      - 943055a33dc4f3cb4831840bc3bde5c4
+                      - 9cffff05db2e16f45acd4659506142df
+                    source: null
+        "401":
+          description: unauthorized with bad passphrase
+        "404":
+          description: currency not found
+      security:
+        - ApiKey: []
+          Passphrase: []
+  /api/v1/users:
+    get:
+      tags:
+        - Users
+      summary: Gets a list of users
+      description: Retrieve a list of the users that belong to your organization.
+      operationId: GetUsers
+      responses:
+        "200":
+          description: users found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Array of users
+                    items:
+                      $ref: "#/components/schemas/user"
+              examples:
+                response:
+                  value:
+                    data:
+                      - id: accdb67e-c63f-4d8c-9c2f-71e5f6ae2ad6
+                        name: test1
+                        state: active
+                        email: test@coinbase.com
+                        created_at: 2020-07-22T18:56:04.5650000Z
+                        updated_at: 2020-07-22T18:56:04.5650000Z
+                        role: auditor
+                      - id: e013eafb-4954-4eef-a33f-51bc804ddc29
+                        name: test2
+                        state: active
+                        email: test@coinbase.com
+                        created_at: 2020-07-22T18:56:04.5750000Z
+                        updated_at: 2020-07-22T18:56:04.5750000Z
+                        role: auditor
+                      - id: e7b77718-e72e-4b02-9fee-9ec2564be4e9
+                        name: test3
+                        state: active
+                        email: test@coinbase.com
+                        created_at: 2020-07-22T18:56:04.5850000Z
+                        updated_at: 2020-07-22T18:56:04.5850000Z
+                        role: auditor
+                    pagination:
+                      before: accdb67e-c63f-4d8c-9c2f-71e5f6ae2ad6
+                      after: e7b77718-e72e-4b02-9fee-9ec2564be4e9
+        "401":
+          description: unauthorized with bad passphrase
+      security:
+        - ApiKey: []
+          Passphrase: []
+  "/api/v1/users/{id}":
+    get:
+      tags:
+        - Users
+      summary: Gets a single user by id
+      description: Retrieve information about a single user in your organization.
+      operationId: GetUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user id to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: user found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+              examples:
+                response:
+                  value:
+                    id: 6a8b6f98-08d2-4323-b84c-6b0a7b8c5462
+                    name: test1
+                    state: active
+                    email: test@coinbase.com
+                    created_at: 2020-07-22T18:56:04.9750000Z
+                    updated_at: 2020-07-22T18:56:04.9750000Z
+                    role: auditor
+        "401":
+          description: unauthorized with bad passphrase
+        "404":
+          description: user not found
+      security:
+        - ApiKey: []
+          Passphrase: []
+  /api/v1/wallets:
+    get:
+      tags:
+        - Wallets
+      summary: Gets a list of wallets
+      description: "Retrieve a list of your organization's wallets. The response value can
+        be filtered by query parameters.
+        Balances are
+        returned as the integer value of the native units. To get the standard
+        decimal representation, you will need to retrieve the number of decimals
+        for the currency from the Currencies endpoint. Divide the balance by
+        10^decimals."
+
+      operationId: GetWallets
+      parameters:
+        - name: currency
+          in: query
+          description: The currency to filter
+          schema:
+            type: string
+      responses:
+        "200":
+          description: filtered wallets found by currency
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Array of wallets
+                    items:
+                      $ref: "#/components/schemas/wallet"
+              examples:
+                response:
+                  value:
+                    data:
+                      - id: 9ca8d02d-563e-4b4f-b5c9-d9d28fb3ac0a
+                        name: test
+                        created_at: 2020-07-22T18:56:07.5700000Z
+                        updated_at: 2020-07-22T18:56:07.5700000Z
+                        balance: 0
+                        balance_whole_units: 0
+                        withdrawable_balance: 0
+                        withdrawable_balance_whole_units: 0
+                        unvested_balance: 0
+                        unvested_balance_whole_units: 0
+                        cold_address: fake_eth_cold_address
+                        currency: ETH
+                      - id: 90b582e4-2c3e-4ee0-ae15-13036e5de0fd
+                        name: test
+                        created_at: 2020-07-22T18:56:07.5500000Z
+                        updated_at: 2020-07-22T18:56:07.5500000Z
+                        balance: 0
+                        balance_whole_units: 0
+                        withdrawable_balance: 0
+                        withdrawable_balance_whole_units: 0
+                        unvested_balance: 0
+                        unvested_balance_whole_units: 0
+                        cold_address: fake_btc_cold_address
+                        currency: BTC
+                    pagination:
+                      before: 9ca8d02d-563e-4b4f-b5c9-d9d28fb3ac0a
+                      after: 90b582e4-2c3e-4ee0-ae15-13036e5de0fd
+        "401":
+          description: unauthorized with bad passphrase
+      security:
+        - ApiKey: []
+          Passphrase: []
+    post:
+      tags:
+        - Wallets
+      summary: Creates a new wallet (beta)
+      description: Request a new wallet be created for your organization. This request is
+        subject to in-app consensus from your organization's signatories before
+        it can be fulfilled.
+      operationId: CreateWallet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                currency: btc
+                name: My BTC Wallet
+              required:
+                - currency
+                - name
+              properties:
+                currency:
+                  type: string
+                  description: The currency of the new wallet
+                name:
+                  type: string
+                  description: The name of the new wallet
+        description: The create wallet payload
+      responses:
+        "201":
+          description: with READ_WRITE key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/wallet_change"
+              examples:
+                response:
+                  value:
+                    activity_id: 5f541f4b-92a1-4817-ab8a-c47a8a6a5e72
+                    currency: BTC
+                    approval_url: http://custody.coinbase.com/activity/5f541f4b-92a1-4817-ab8a-c47a8a6a5e72
+                    name: My BTC Wallet
+        "400":
+          description: invalid name
+        "401":
+          description: unauthorized with bad passphrase
+      security:
+        - ApiKey: []
+          Passphrase: []
+  "/api/v1/wallets/{id}":
+    get:
+      tags:
+        - Wallets
+      summary: Gets a single wallet by id
+      description: Retrieve information about an individual wallet for your organization.
+      operationId: GetWalletById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The wallet id to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: wallet found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/wallet"
+              examples:
+                response:
+                  value:
+                    id: 366f4746-2d0a-40e4-a052-24109fe98e82
+                    name: test
+                    created_at: 2020-07-22T18:56:12.1070000Z
+                    updated_at: 2020-07-22T18:56:12.1070000Z
+                    balance: 0
+                    balance_whole_units: 0
+                    withdrawable_balance: 0
+                    withdrawable_balance_whole_units: 0
+                    unvested_balance: 0
+                    unvested_balance_whole_units: 0
+                    cold_address: fake_btc_cold_address
+                    currency: BTC
+        "401":
+          description: unauthorized with bad passphrase
+        "404":
+          description: currency not found
+      security:
+        - ApiKey: []
+          Passphrase: []
+  /api/v1/address_book:
+    get:
+      tags:
+        - Address Book
+      summary: Gets a list of address book addresses (beta)
+      description: Retrieve a list of addresses in your organization's address book. The
+        response value can be filtered by query parameters.
+      operationId: GetAddressBook
+      parameters:
+        - name: currency
+          in: query
+          description: The currency to filter
+          schema:
+            type: string
+        - name: account_identifier
+          in: query
+          description: The account identifier to filter by
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: The name to filter by
+          schema:
+            type: string
+        - name: address
+          in: query
+          description: The address to filter by
+          schema:
+            type: string
+      responses:
+        "200":
+          description: filtered addresses found by currency
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Array of addresses from the address book
+                    items:
+                      $ref: "#/components/schemas/address_book_address"
+              examples:
+                response:
+                  value:
+                    data:
+                      - id: 24592c96-933a-4b74-8bc5-c0559e9cb7fc
+                        address: xlm_address_1
+                        name: My Custom XLM Address
+                        created_at: 2020-07-22T18:56:16.4650000Z
+                        updated_at: 2020-07-22T18:56:16.4650000Z
+                        currency: XLM
+                        account_identifier: 123
+                      - id: 0b8c4494-6b81-480d-8345-ed9bb56fa495
+                        address: btc_address_1
+                        name: Coinbase Pro BTC
+                        created_at: 2020-07-22T18:56:16.4490000Z
+                        updated_at: 2020-07-22T18:56:16.4490000Z
+                        currency: BTC
+                    pagination:
+                      before: 24592c96-933a-4b74-8bc5-c0559e9cb7fc
+                      after: 0b8c4494-6b81-480d-8345-ed9bb56fa495
+        "401":
+          description: unauthorized with bad passphrase
+      security:
+        - ApiKey: []
+          Passphrase: []
+    post:
+      tags:
+        - Address Book
+      summary: Creates a new address book address (beta)
+      description: Request a new address be added to your organization's address book. This
+        request is subject to in-app consensus from your organization's
+        signatories before it can be fulfilled.
+      operationId: CreateAddressBookEntry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                curency: BTC
+                name: Bitcoin Genesis Address
+                address: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+              required:
+                - currency
+                - address
+                - name
+              properties:
+                currency:
+                  type: string
+                  description: The currency of the new allowed address
+                name:
+                  type: string
+                  description: The name of the new allowed address
+                address:
+                  type: string
+                  description: The crypto address of the new allowed address
+                account_identifier:
+                  type: string
+                  description: The account identifier of the new allowed address
+        description: The address payload
+      responses:
+        "201":
+          description: with READ_WRITE key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/address_book_change"
+              examples:
+                response:
+                  value:
+                    activity_id: 20a78101-4723-41bc-b4f6-281a61d32888
+                    account_identifier: 2423354331
+                    currency: XRP
+                    approval_url: http://custody.coinbase.com/activity/20a78101-4723-41bc-b4f6-281a61d32888
+                    name: Coinbase Pro XRP
+        "400":
+          description: invalid account identifier format
+        "401":
+          description: unauthorized with bad passphrase
+      security:
+        - ApiKey: []
+          Passphrase: []
+servers:
+  - url: https://api.custody.coinbase.com
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      description: Organizations API key
+      name: CB-ACCESS-KEY
+      in: header
+    Passphrase:
+      type: apiKey
+      description: Organizations API key passphrase
+      name: CB-ACCESS-PASSPHRASE
+      in: header
+  schemas:
+    pagination:
+      type: object
+      properties: 
+        before:
+          type: string
+          description: Id of the last element to be found in the page before the current one.
+        after:
+          type: string
+          description: Id of the first element to be found in the page after the current one.
+        limit:
+          type: number
+          default: 25
+          description: Maximum number of items to return per page of results.
+    address:
+      type: object
+      properties:
+        address:
+          type: string
+          description: The crypto address
+        currency:
+          type: string
+          description: The type of currency
+        amount_whole_units:
+          type: string
+          description: The balance of the address in whole network units
+        amount:
+          type: integer
+          description: The balance of the address in atomic network units
+        state:
+          type: string
+          description: The state of the address if it is cold or restored
+        blockchain_link:
+          type: string
+          description: Blockchain explorer link
+        created_at:
+          type: string
+          description: The time this address was created
+        updated_at:
+          type: string
+          description: The time this address was last updated
+    currency:
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: The type of currency
+        name:
+          type: string
+          description: The name of the currency
+    transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the transaction
+        type:
+          type: string
+          description: The type of transaction for example deposit or withdrawal
+        amount_whole_units:
+          type: string
+          description: The amount to deposit or withdraw in whole network units
+        amount:
+          type: number
+          description: The amount to deposit or withdraw in atomic network units
+        currency:
+          type: string
+          description: The type of currency
+        fee:
+          type: integer
+          description: The fee of the transaction
+        hashes:
+          type: array
+          description: Blockchain transaction hashes
+          items:
+            type: string
+        created_at:
+          type: string
+          description: The time this transaction was created
+        updated_at:
+          type: string
+          description: The time this transaction was updated
+    transactions:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/transaction"
+        pagination:
+          $ref: "#/components/schemas/pagination"
+      example:
+        response:
+          value:
+            data:
               - id: 86f54dcc-63d9-4275-8955-8ef69b6b197e
                 type: withdrawal
                 state: done
                 amount: -100
-                destination: 
+                destination: null
                 created_at: 2020-07-22T17:45:39.7230000Z
                 updated_at: 2020-07-22T18:55:40.0150000Z
                 wallet_id: 22ce4248-b57c-4bc7-bacf-4494b0251196
@@ -261,695 +901,154 @@ paths:
                 currency: BTC
                 fee: 10
                 hashes:
-                - 8ee454cd21a6599f70599fc3199089b1
-                source: 
-              pagination:
-                before: d506ed51-d215-4d2e-bf4b-b6a1c761af88
-                after: 6bd440dc-2726-4ad8-8420-39f096397a7a
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-    post:
-      tags:
-      - Transactions
-      summary: Creates a new withdrawal transaction (beta)
-      description: Request a new withdrawal transaction be created from one of your organization's wallets. This request is subject to in-app consensus from your organization's signatories before it can be fulfilled.
-      operationId: CreateTransaction
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: payload
-        in: body
-        description: The create transaction payload
-        schema:
-          type: object
-          example:
-            destination: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
-            source: 93cd4918-82bf-4a04-b58e-c94e36d0d817
-            whole_amount: 10.0
-          required:
-          - whole_amount
-          - destination
-          - source
-          properties:
-            source:
-              type: string
-              description: The source wallet id for the transaction
-            currency:
-              type: string
-              description: A fiat currency symbol such as USD. If provided Custody will automatically convert the amount value into crypto units
-            whole_amount:
-              type: string
-              description: The amount of the transaction in whole units (e.g. "1.01")
-            destination:
-              type: string
-              description: The destination address of the transaction
-            account_identifier:
-              type: string
-              description: The account identifier of the transaction (for example destination tag or memo value)
-      responses:
-        201:
-          description: with READ_WRITE key
-          schema:
-            $ref: '#/definitions/transaction_request'
-          examples:
-            application/json:
-              destination: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
-              activity_id: 4bc6d4aa-0988-428a-95f6-f6dad01c2d89
-              currency: BTC
-              approval_url: http://custody.coinbase.com/activity/4bc6d4aa-0988-428a-95f6-f6dad01c2d89
-              whole_amount: 0.001
-              fee: 0.0000817
-              source: 14J9RE7ieGf2ysmtHCEwjEnVSrundEqvLP
-        400:
-          description: invalid account identifier format
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-  /api/v1/transactions/{id}:
-    get:
-      tags:
-      - Transactions
-      summary: Gets a single transaction by id
-      description: Retrieve information about a single transaction from your organization.
-      operationId: GetTransactionById
-      produces:
-      - application/json
-      parameters:
-      - type: string
-        name: id
-        in: path
-        required: true
-        description: The transaction id to retrieve
-      responses:
-        200:
-          description: found transaction
-          schema:
-            $ref: '#/definitions/wallet'
-          examples:
-            application/json:
-              id: 9ea39fe5-eea0-4b09-ac98-4fff3f72a6ed
-              type: deposit
-              state: imported
-              amount: 2000
-              destination: 
-              created_at: 2020-07-20T18:55:54.6140000Z
-              updated_at: 2020-07-22T18:55:54.6460000Z
-              wallet_id: 40178291-bfa5-438f-a9b2-294a2e54c839
-              amount_whole_units: 0.00002
-              currency: BTC
-              fee: 0
-              hashes:
-              - 943055a33dc4f3cb4831840bc3bde5c4
-              - 9cffff05db2e16f45acd4659506142df
-              source: 
-        404:
-          description: currency not found
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-  /api/v1/users:
-    get:
-      tags:
-      - Users
-      summary: Gets a list of users
-      description: Retrieve a list of the users that belong to your organization.
-      operationId: GetUsers
-      produces:
-      - application/json
-      responses:
-        200:
-          description: users found
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                description: Array of users
-                items:
-                  $ref: '#/definitions/user'
-          examples:
-            application/json:
-              data:
-              - id: accdb67e-c63f-4d8c-9c2f-71e5f6ae2ad6
-                name: test1
-                state: active
-                email: test@coinbase.com
-                created_at: 2020-07-22T18:56:04.5650000Z
-                updated_at: 2020-07-22T18:56:04.5650000Z
-                role: auditor
-              - id: e013eafb-4954-4eef-a33f-51bc804ddc29
-                name: test2
-                state: active
-                email: test@coinbase.com
-                created_at: 2020-07-22T18:56:04.5750000Z
-                updated_at: 2020-07-22T18:56:04.5750000Z
-                role: auditor
-              - id: e7b77718-e72e-4b02-9fee-9ec2564be4e9
-                name: test3
-                state: active
-                email: test@coinbase.com
-                created_at: 2020-07-22T18:56:04.5850000Z
-                updated_at: 2020-07-22T18:56:04.5850000Z
-                role: auditor
-              pagination:
-                before: accdb67e-c63f-4d8c-9c2f-71e5f6ae2ad6
-                after: e7b77718-e72e-4b02-9fee-9ec2564be4e9
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-  /api/v1/users/{id}:
-    get:
-      tags:
-      - Users
-      summary: Gets a single user by id
-      description: Retrieve information about a single user in your organization.
-      operationId: GetUserById
-      produces:
-      - application/json
-      parameters:
-      - type: string
-        name: id
-        in: path
-        required: true
-        description: The user id to retrieve
-      responses:
-        200:
-          description: user found
-          schema:
-            $ref: '#/definitions/user'
-          examples:
-            application/json:
-              id: 6a8b6f98-08d2-4323-b84c-6b0a7b8c5462
-              name: test1
-              state: active
-              email: test@coinbase.com
-              created_at: 2020-07-22T18:56:04.9750000Z
-              updated_at: 2020-07-22T18:56:04.9750000Z
-              role: auditor
-        401:
-          description: unauthorized with bad passphrase
-        404:
-          description: user not found
-      security:
-      - ApiKey: []
-        Passphrase: []
-  /api/v1/wallets:
-    get:
-      tags:
-      - Wallets
-      summary: Gets a list of wallets
-      description: Retrieve a list of your organization's wallets. The response value can be filtered by query parameters.<aside class="notice">Balances are returned as the integer value of the native units. To get the standard decimal representation, you will need to retrieve the number of decimals for the currency from the Currencies endpoint. Divide the balance by 10^decimals.</aside>
-      operationId: GetWallets
-      produces:
-      - application/json
-      parameters:
-      - type: string
-        name: currency
-        in: query
-        description: The currency to filter
-      responses:
-        200:
-          description: filtered wallets found by currency
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                description: Array of wallets
-                items:
-                  $ref: '#/definitions/wallet'
-          examples:
-            application/json:
-              data:
-              - id: 9ca8d02d-563e-4b4f-b5c9-d9d28fb3ac0a
-                name: test
-                created_at: 2020-07-22T18:56:07.5700000Z
-                updated_at: 2020-07-22T18:56:07.5700000Z
-                balance: 0
-                balance_whole_units: 0.0
-                withdrawable_balance: 0
-                withdrawable_balance_whole_units: 0.0
-                unvested_balance: 0
-                unvested_balance_whole_units: 0.0
-                cold_address: fake_eth_cold_address
-                currency: ETH
-              - id: 90b582e4-2c3e-4ee0-ae15-13036e5de0fd
-                name: test
-                created_at: 2020-07-22T18:56:07.5500000Z
-                updated_at: 2020-07-22T18:56:07.5500000Z
-                balance: 0
-                balance_whole_units: 0.0
-                withdrawable_balance: 0
-                withdrawable_balance_whole_units: 0.0
-                unvested_balance: 0
-                unvested_balance_whole_units: 0.0
-                cold_address: fake_btc_cold_address
-                currency: BTC
-              pagination:
-                before: 9ca8d02d-563e-4b4f-b5c9-d9d28fb3ac0a
-                after: 90b582e4-2c3e-4ee0-ae15-13036e5de0fd
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-    post:
-      tags:
-      - Wallets
-      summary: Creates a new wallet (beta)
-      description: Request a new wallet be created for your organization. This request is subject to in-app consensus from your organization's signatories before it can be fulfilled.
-      operationId: CreateWallet
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: payload
-        in: body
-        description: The create wallet payload
-        schema:
-          type: object
-          example:
-            currency: btc
-            name: My BTC Wallet
-          required:
-          - currency
-          - name
-          properties:
-            currency:
-              type: string
-              description: The currency of the new wallet
-            name:
-              type: string
-              description: The name of the new wallet
-      responses:
-        201:
-          description: with READ_WRITE key
-          schema:
-            $ref: '#/definitions/wallet_change'
-          examples:
-            application/json:
-              activity_id: 5f541f4b-92a1-4817-ab8a-c47a8a6a5e72
-              currency: BTC
-              approval_url: http://custody.coinbase.com/activity/5f541f4b-92a1-4817-ab8a-c47a8a6a5e72
-              name: My BTC Wallet
-        400:
-          description: invalid name
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-  /api/v1/wallets/{id}:
-    get:
-      tags:
-      - Wallets
-      summary: Gets a single wallet by id
-      description: Retrieve information about an individual wallet for your organization.
-      operationId: GetWalletById
-      produces:
-      - application/json
-      parameters:
-      - type: string
-        name: id
-        in: path
-        required: true
-        description: The wallet id to retrieve
-      responses:
-        200:
-          description: wallet found
-          schema:
-            $ref: '#/definitions/wallet'
-          examples:
-            application/json:
-              id: 366f4746-2d0a-40e4-a052-24109fe98e82
-              name: test
-              created_at: 2020-07-22T18:56:12.1070000Z
-              updated_at: 2020-07-22T18:56:12.1070000Z
-              balance: 0
-              balance_whole_units: 0.0
-              withdrawable_balance: 0
-              withdrawable_balance_whole_units: 0.0
-              unvested_balance: 0
-              unvested_balance_whole_units: 0.0
-              cold_address: fake_btc_cold_address
-              currency: BTC
-        404:
-          description: currency not found
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-  /api/v1/address_book:
-    get:
-      tags:
-      - AddressBook
-      summary: Gets a list of AddressBook addresses (beta)
-      description: Retrieve a list of addresses in your organization's AddressBook. The response value can be filtered by query parameters.
-      operationId: GetAddressBook
-      produces:
-      - application/json
-      parameters:
-      - type: string
-        name: currency
-        in: query
-        description: The currency to filter
-      - type: string
-        name: account_identifier
-        in: query
-        description: The account identifier to filter by
-      - type: string
-        name: name
-        in: query
-        description: The name to filter by
-      - type: string
-        name: address
-        in: query
-        description: The address to filter by
-      responses:
-        200:
-          description: filtered addresses found by currency
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                description: Array of addresses from the AddressBook
-                items:
-                  $ref: '#/definitions/address_book_address'
-          examples:
-            application/json:
-              data:
-              - id: 24592c96-933a-4b74-8bc5-c0559e9cb7fc
-                address: xlm_address_1
-                name: My Custom XLM Address
-                created_at: 2020-07-22T18:56:16.4650000Z
-                updated_at: 2020-07-22T18:56:16.4650000Z
-                currency: XLM
-                account_identifier: 123
-              - id: 0b8c4494-6b81-480d-8345-ed9bb56fa495
-                address: btc_address_1
-                name: Coinbase Pro BTC
-                created_at: 2020-07-22T18:56:16.4490000Z
-                updated_at: 2020-07-22T18:56:16.4490000Z
-                currency: BTC
-              pagination:
-                before: 24592c96-933a-4b74-8bc5-c0559e9cb7fc
-                after: 0b8c4494-6b81-480d-8345-ed9bb56fa495
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-    post:
-      tags:
-      - AddressBook
-      summary: Creates a new AddressBook address (beta)
-      description: Request a new address be added to your organization's AddressBook. This request is subject to in-app consensus from your organization's signatories before it can be fulfilled.
-      operationId: CreateAddressBookEntry
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: payload
-        in: body
-        description: The address payload
-        schema:
-          type: object
-          example:
-            curency: BTC
-            name: Bitcoin Genesis Address
-            address: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
-          required:
-          - currency
-          - address
-          - name
-          properties:
-            currency:
-              type: string
-              description: The currency of the new allowed address
-            name:
-              type: string
-              description: The name of the new allowed address
-            address:
-              type: string
-              description: The crypto address of the new allowed address
-            account_identifier:
-              type: string
-              description: The account identifier of the new allowed address
-      responses:
-        201:
-          description: with READ_WRITE key
-          schema:
-            $ref: '#/definitions/address_book_change'
-          examples:
-            application/json:
-              activity_id: 20a78101-4723-41bc-b4f6-281a61d32888
-              account_identifier: 2423354331
-              currency: XRP
-              approval_url: http://custody.coinbase.com/activity/20a78101-4723-41bc-b4f6-281a61d32888
-              name: Coinbase Pro XRP
-        400:
-          description: invalid account identifier format
-        401:
-          description: unauthorized with bad passphrase
-      security:
-      - ApiKey: []
-        Passphrase: []
-definitions:
-  address:
-    type: object
-    properties:
-      address:
-        type: string
-        description: The crypto address
-      currency:
-        type: string
-        description: The type of currency
-      amount_whole_units:
-        type: string
-        description: The balance of the address in whole network units
-      amount:
-        type: integer
-        description: The balance of the address in atomic network units
-      state:
-        type: string
-        description: The state of the address if it is cold or restored
-      blockchain_link:
-        type: string
-        description: Blockchain explorer link
-      created_at:
-        type: string
-        description: The time this address was created
-      updated_at:
-        type: string
-        description: The time this address was last updated
-  currency:
-    type: object
-    properties:
-      symbol:
-        type: string
-        description: The type of currency
-      name:
-        type: string
-        description: The name of the currency
-  transaction:
-    type: object
-    properties:
-      id:
-        type: string
-        description: The ID of the transaction
-      type:
-        type: string
-        description: The type of transaction for example deposit or withdrawal
-      amount_whole_units:
-        type: string
-        description: The amount to deposit or withdraw in whole network units
-      amount:
-        type: number
-        description: The amount to deposit or withdraw in atomic network units
-      currency:
-        type: string
-        description: The type of currency
-      fee:
-        type: integer
-        description: The fee of the transaction
-      hashes:
-        type: array
-        description: Blockchain transaction hashes
-        items:
+                  - 8ee454cd21a6599f70599fc3199089b1
+                source: null
+            pagination:
+              before: d506ed51-d215-4d2e-bf4b-b6a1c761af88
+              after: 6bd440dc-2726-4ad8-8420-39f096397a7a
+    transaction_request:
+      type: object
+      properties:
+        activity_id:
           type: string
-      created_at:
-        type: string
-        description: The time this transaction was created
-      updated_at:
-        type: string
-        description: The time this transaction was updated
-  transaction_request:
-    type: object
-    properties:
-      activity_id:
-        type: string
-        description: The ID of the new transaction
-      approval_url:
-        type: string
-        description: The url of the new transaction
-      amount:
-        type: string
-        description: The amount of the new transaction
-      account_identifier:
-        type: string
-        description: The account identifier of used for the new transaction
-      destination:
-        type: string
-        description: The destination of the new transaction
-      currency:
-        type: string
-        description: The currency of the new transaction
-      fee:
-        type: string
-        description: The fees paid for the new transaction
-      source:
-        type: string
-        description: The source address of the new transaction
-  user:
-    type: object
-    properties:
-      id:
-        type: string
-        description: The ID of the user
-      name:
-        type: string
-        description: The name of the user
-      email:
-        type: string
-        description: The email of the user
-      state:
-        type: string
-        description: The state of the user for example active or disabled
-      role:
-        type: string
-        description: The users role in the organization
-      created_at:
-        type: string
-        description: The time the user was created
-      updated_at:
-        type: string
-        description: The time the user was last updated
-  wallet_change:
-    type: object
-    properties:
-      activity_id:
-        type: string
-        description: The ID of the new wallet request
-      name:
-        type: string
-        description: The name of the new wallet
-      currency:
-        type: string
-        description: The type of currency of the new wallet
-      approval_url:
-        type: string
-        description: The url of the new wallet request
-  wallet:
-    type: object
-    properties:
-      id:
-        type: string
-        description: The ID of the wallet
-      name:
-        type: string
-        description: The name of the wallet
-      balance_whole_units:
-        type: string
-        description: The current balance in whole network units
-      withdrawable_balance_whole_units:
-        type: string
-        description: The withdrawable balance in whole network units
-      balance:
-        type: string
-        description: The current balance in atomic network units
-      withdrawable_balance:
-        type: string
-        description: The current withdrawable balance in atomic network units
-      cold_address:
-        type: string
-        description: The cold crypto address
-      currency:
-        type: string
-        description: The type of currency
-      created_at:
-        type: string
-        description: The time the wallet was created
-      updated_at:
-        type: string
-        description: The time the wallet was last updated
-  address_book_address:
-    type: object
-    properties:
-      id:
-        type: string
-        description: The ID of the allowed address
-      name:
-        type: string
-        description: The name of the allowed address
-      address:
-        type: string
-        description: The crypto address of the allowed address
-      currency:
-        type: string
-        description: The type of currency of the allowed address
-      account_identifier:
-        type: string
-        description: The account identifier associated with the allowed address (for example destination tag or memo value)
-      created_at:
-        type: string
-        description: The time the allowed address was created
-      updated_at:
-        type: string
-        description: The time the allowed address was last updated
-  address_book_change:
-    type: object
-    properties:
-      activity_id:
-        type: string
-        description: The ID of the new AddressBook address request
-      approval_url:
-        type: string
-        description: The url of the new AddressBook address request
-      address:
-        type: string
-        description: The crypto address of the allowed address
-      account_identifier:
-        type: string
-        description: The account identifier of the allowed address (for example the destination tag or memo value)
-      currency:
-        type: string
-        description: The type of currency of the allowed address
-      name:
-        type: string
-        description: The name of the allowed address
-securityDefinitions:
-  ApiKey:
-    type: apiKey
-    description: Organizations API key
-    name: CB-ACCESS-KEY
-    in: header
-  Passphrase:
-    type: apiKey
-    description: Organizations API key passphrase
-    name: CB-ACCESS-PASSPHRASE
-    in: header
+          description: The ID of the new transaction
+        approval_url:
+          type: string
+          description: The url of the new transaction
+        amount:
+          type: string
+          description: The amount of the new transaction
+        account_identifier:
+          type: string
+          description: The account identifier of used for the new transaction
+        destination:
+          type: string
+          description: The destination of the new transaction
+        currency:
+          type: string
+          description: The currency of the new transaction
+        fee:
+          type: string
+          description: The fees paid for the new transaction
+        source:
+          type: string
+          description: The source address of the new transaction
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the user
+        name:
+          type: string
+          description: The name of the user
+        email:
+          type: string
+          description: The email of the user
+        state:
+          type: string
+          description: The state of the user for example active or disabled
+        role:
+          type: string
+          description: The users role in the organization
+        created_at:
+          type: string
+          description: The time the user was created
+        updated_at:
+          type: string
+          description: The time the user was last updated
+    wallet_change:
+      type: object
+      properties:
+        activity_id:
+          type: string
+          description: The ID of the new wallet request
+        name:
+          type: string
+          description: The name of the new wallet
+        currency:
+          type: string
+          description: The type of currency of the new wallet
+        approval_url:
+          type: string
+          description: The url of the new wallet request
+    wallet:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the wallet
+        name:
+          type: string
+          description: The name of the wallet
+        balance_whole_units:
+          type: string
+          description: The current balance in whole network units
+        withdrawable_balance_whole_units:
+          type: string
+          description: The withdrawable balance in whole network units
+        balance:
+          type: string
+          description: The current balance in atomic network units
+        withdrawable_balance:
+          type: string
+          description: The current withdrawable balance in atomic network units
+        cold_address:
+          type: string
+          description: The cold crypto address
+        currency:
+          type: string
+          description: The type of currency
+        created_at:
+          type: string
+          description: The time the wallet was created
+        updated_at:
+          type: string
+          description: The time the wallet was last updated
+    address_book_address:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the allowed address
+        name:
+          type: string
+          description: The name of the allowed address
+        address:
+          type: string
+          description: The crypto address of the allowed address
+        currency:
+          type: string
+          description: The type of currency of the allowed address
+        account_identifier:
+          type: string
+          description: The account identifier associated with the allowed address (for
+            example destination tag or memo value)
+        created_at:
+          type: string
+          description: The time the allowed address was created
+        updated_at:
+          type: string
+          description: The time the allowed address was last updated
+    address_book_change:
+      type: object
+      properties:
+        activity_id:
+          type: string
+          description: The ID of the new address book address request
+        approval_url:
+          type: string
+          description: The url of the new address book address request
+        address:
+          type: string
+          description: The crypto address of the allowed address
+        account_identifier:
+          type: string
+          description: The account identifier of the allowed address (for example the
+            destination tag or memo value)
+        currency:
+          type: string
+          description: The type of currency of the allowed address
+        name:
+          type: string
+          description: The name of the allowed address
