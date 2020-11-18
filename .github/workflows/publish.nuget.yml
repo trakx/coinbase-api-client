@@ -14,7 +14,7 @@ on:
 env:
   SOLUTION_PATH: "src/Trakx.Coinbase.ApiClient.sln"
   PACKAGE_NAME: Trakx.Coinbase.Custody.ApiClient
-  PROJECT_PATH: "src/Trakx.Coinbase.ApiClient/Trakx.Coinbase.Custody.ApiClient.csproj"
+  PROJECT_PATH: "src/Trakx.Custody.Coinbase.ApiClient/Trakx.Coinbase.Custody.ApiClient.csproj"
   CoinbaseCustodyApiConfiguration__AccessKey: ${{secrets.COINBASE_CUSTODY_ACCESSKEY}}
   CoinbaseCustodyApiConfiguration__PassPhrase: ${{secrets.COINBASE_CUSTODY_PASSPHRASE}}
 
