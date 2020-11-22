@@ -28,7 +28,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <param name="state">The state of the address to filter</param>
         /// <returns>filtered addresses by wallet_id</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Response>> GetAddressesAsync(string wallet_id = null, string currency = null, State? state = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Addresses>> GetAddressesAsync(string wallet_id = null, string currency = null, Address_state? state = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Gets a single address</summary>
@@ -72,7 +72,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <param name="state">The state of the address to filter</param>
         /// <returns>filtered addresses by wallet_id</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Response>> GetAddressesAsync(string wallet_id = null, string currency = null, State? state = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Addresses>> GetAddressesAsync(string wallet_id = null, string currency = null, Address_state? state = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/addresses?");
@@ -120,12 +120,12 @@ namespace Trakx.Coinbase.Custody.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Addresses>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ResponseWrapper<Response>(status_, headers_, objectResponse_.Object);
+                            return new ResponseWrapper<Addresses>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         if (status_ == 401)
@@ -348,7 +348,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <param name="limit">The number of symbols to retrieve</param>
         /// <returns>with READ_WRITE key</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Response2>> GetCurrenciesAsync(string symbol = null, string limit = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Response>> GetCurrenciesAsync(string symbol = null, string limit = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Gets a single currency by symbol</summary>
@@ -391,7 +391,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <param name="limit">The number of symbols to retrieve</param>
         /// <returns>with READ_WRITE key</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Response2>> GetCurrenciesAsync(string symbol = null, string limit = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Response>> GetCurrenciesAsync(string symbol = null, string limit = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/currencies?");
@@ -435,12 +435,12 @@ namespace Trakx.Coinbase.Custody.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response2>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Response>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ResponseWrapper<Response2>(status_, headers_, objectResponse_.Object);
+                            return new ResponseWrapper<Response>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         if (status_ == 401)
@@ -872,14 +872,14 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <param name="human_id">The human id to filter</param>
         /// <returns>filtered by human id</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Response3>> GetTransactionsAsync(string currency = null, string state = null, string type = null, string wallet_id = null, string start_time = null, string end_time = null, string human_id = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Transactions>> GetTransactionsAsync(string currency = null, Transaction_state? state = null, Transaction_type? type = null, string wallet_id = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, string human_id = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Creates a new withdrawal transaction (beta)</summary>
-        /// <param name="payload">The create transaction payload</param>
+        /// <param name="body">The create transaction payload</param>
         /// <returns>with READ_WRITE key</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Transaction_request>> CreateTransactionAsync(Payload payload = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Transaction_request>> CreateTransactionAsync(Body body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Gets a single transaction by id</summary>
@@ -927,7 +927,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <param name="human_id">The human id to filter</param>
         /// <returns>filtered by human id</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Response3>> GetTransactionsAsync(string currency = null, string state = null, string type = null, string wallet_id = null, string start_time = null, string end_time = null, string human_id = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Transactions>> GetTransactionsAsync(string currency = null, Transaction_state? state = null, Transaction_type? type = null, string wallet_id = null, System.DateTimeOffset? start_time = null, System.DateTimeOffset? end_time = null, string human_id = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/transactions?");
@@ -949,11 +949,11 @@ namespace Trakx.Coinbase.Custody.ApiClient
             }
             if (start_time != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("start_time") + "=").Append(System.Uri.EscapeDataString(ConvertToString(start_time, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("start_time") + "=").Append(System.Uri.EscapeDataString(start_time.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (end_time != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("end_time") + "=").Append(System.Uri.EscapeDataString(ConvertToString(end_time, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("end_time") + "=").Append(System.Uri.EscapeDataString(end_time.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (human_id != null) 
             {
@@ -991,12 +991,12 @@ namespace Trakx.Coinbase.Custody.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response3>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Transactions>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ResponseWrapper<Response3>(status_, headers_, objectResponse_.Object);
+                            return new ResponseWrapper<Transactions>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         if (status_ == 401)
@@ -1026,10 +1026,10 @@ namespace Trakx.Coinbase.Custody.ApiClient
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Creates a new withdrawal transaction (beta)</summary>
-        /// <param name="payload">The create transaction payload</param>
+        /// <param name="body">The create transaction payload</param>
         /// <returns>with READ_WRITE key</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Transaction_request>> CreateTransactionAsync(Payload payload = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Transaction_request>> CreateTransactionAsync(Body body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/transactions");
@@ -1040,7 +1040,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -1158,16 +1158,16 @@ namespace Trakx.Coinbase.Custody.ApiClient
                             return new ResponseWrapper<Wallet>(status_, headers_, objectResponse_.Object);
                         }
                         else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("currency not found", status_, responseText_, headers_, null);
-                        }
-                        else
                         if (status_ == 401)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("unauthorized with bad passphrase", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("currency not found", status_, responseText_, headers_, null);
                         }
                         else
                         {
@@ -1299,7 +1299,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <summary>Gets a list of users</summary>
         /// <returns>users found</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Response4>> GetUsersAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Users>> GetUsersAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Gets a single user by id</summary>
@@ -1340,7 +1340,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <summary>Gets a list of users</summary>
         /// <returns>users found</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Response4>> GetUsersAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Users>> GetUsersAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/users");
@@ -1375,12 +1375,12 @@ namespace Trakx.Coinbase.Custody.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response4>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Users>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ResponseWrapper<Response4>(status_, headers_, objectResponse_.Object);
+                            return new ResponseWrapper<Users>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         if (status_ == 401)
@@ -1602,14 +1602,14 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <param name="currency">The currency to filter</param>
         /// <returns>filtered wallets found by currency</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Response5>> GetWalletsAsync(string currency = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Wallets>> GetWalletsAsync(string currency = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Creates a new wallet (beta)</summary>
-        /// <param name="payload">The create wallet payload</param>
+        /// <param name="body">The create wallet payload</param>
         /// <returns>with READ_WRITE key</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Wallet_change>> CreateWalletAsync(Payload2 payload = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Wallet_change>> CreateWalletAsync(Body2 body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Gets a single wallet by id</summary>
@@ -1651,7 +1651,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <param name="currency">The currency to filter</param>
         /// <returns>filtered wallets found by currency</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Response5>> GetWalletsAsync(string currency = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Wallets>> GetWalletsAsync(string currency = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/wallets?");
@@ -1691,12 +1691,12 @@ namespace Trakx.Coinbase.Custody.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response5>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Wallets>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ResponseWrapper<Response5>(status_, headers_, objectResponse_.Object);
+                            return new ResponseWrapper<Wallets>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         if (status_ == 401)
@@ -1726,10 +1726,10 @@ namespace Trakx.Coinbase.Custody.ApiClient
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Creates a new wallet (beta)</summary>
-        /// <param name="payload">The create wallet payload</param>
+        /// <param name="body">The create wallet payload</param>
         /// <returns>with READ_WRITE key</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Wallet_change>> CreateWalletAsync(Payload2 payload = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Wallet_change>> CreateWalletAsync(Body2 body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/wallets");
@@ -1740,7 +1740,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -1858,16 +1858,16 @@ namespace Trakx.Coinbase.Custody.ApiClient
                             return new ResponseWrapper<Wallet>(status_, headers_, objectResponse_.Object);
                         }
                         else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("currency not found", status_, responseText_, headers_, null);
-                        }
-                        else
                         if (status_ == 401)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("unauthorized with bad passphrase", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("currency not found", status_, responseText_, headers_, null);
                         }
                         else
                         {
@@ -1996,21 +1996,21 @@ namespace Trakx.Coinbase.Custody.ApiClient
     public partial interface IAddressBookClient
     {
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Gets a list of AddressBook addresses (beta)</summary>
+        /// <summary>Gets a list of address book addresses (beta)</summary>
         /// <param name="currency">The currency to filter</param>
         /// <param name="account_identifier">The account identifier to filter by</param>
         /// <param name="name">The name to filter by</param>
         /// <param name="address">The address to filter by</param>
         /// <returns>filtered addresses found by currency</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Response6>> GetAddressBookAsync(string currency = null, string account_identifier = null, string name = null, string address = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Response2>> GetAddressBookAsync(string currency = null, string account_identifier = null, string name = null, string address = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Creates a new AddressBook address (beta)</summary>
-        /// <param name="payload">The address payload</param>
+        /// <summary>Creates a new address book address (beta)</summary>
+        /// <param name="body">The address payload</param>
         /// <returns>with READ_WRITE key</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ResponseWrapper<Address_book_change>> CreateAddressBookEntryAsync(Payload3 payload = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ResponseWrapper<Address_book_change>> CreateAddressBookEntryAsync(Body3 body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
     }
     
@@ -2041,14 +2041,14 @@ namespace Trakx.Coinbase.Custody.ApiClient
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Gets a list of AddressBook addresses (beta)</summary>
+        /// <summary>Gets a list of address book addresses (beta)</summary>
         /// <param name="currency">The currency to filter</param>
         /// <param name="account_identifier">The account identifier to filter by</param>
         /// <param name="name">The name to filter by</param>
         /// <param name="address">The address to filter by</param>
         /// <returns>filtered addresses found by currency</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Response6>> GetAddressBookAsync(string currency = null, string account_identifier = null, string name = null, string address = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Response2>> GetAddressBookAsync(string currency = null, string account_identifier = null, string name = null, string address = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/address_book?");
@@ -2100,12 +2100,12 @@ namespace Trakx.Coinbase.Custody.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Response6>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<Response2>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ResponseWrapper<Response6>(status_, headers_, objectResponse_.Object);
+                            return new ResponseWrapper<Response2>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         if (status_ == 401)
@@ -2134,11 +2134,11 @@ namespace Trakx.Coinbase.Custody.ApiClient
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Creates a new AddressBook address (beta)</summary>
-        /// <param name="payload">The address payload</param>
+        /// <summary>Creates a new address book address (beta)</summary>
+        /// <param name="body">The address payload</param>
         /// <returns>with READ_WRITE key</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseWrapper<Address_book_change>> CreateAddressBookEntryAsync(Payload3 payload = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ResponseWrapper<Address_book_change>> CreateAddressBookEntryAsync(Body3 body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/address_book");
@@ -2149,7 +2149,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -2319,306 +2319,82 @@ namespace Trakx.Coinbase.Custody.ApiClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Pagination 
+    {
+        /// <summary>Id of the last element to be found in the page before the current one.</summary>
+        [Newtonsoft.Json.JsonProperty("before", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Before { get; set; }
+    
+        /// <summary>Id of the first element to be found in the page after the current one.</summary>
+        [Newtonsoft.Json.JsonProperty("after", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string After { get; set; }
+    
+        /// <summary>Maximum number of items to return per page of results.</summary>
+        [Newtonsoft.Json.JsonProperty("limit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Limit { get; set; } = 25D;
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Address 
     {
         /// <summary>The crypto address</summary>
-        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Address1 { get; set; }
     
         /// <summary>The type of currency</summary>
-        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Currency { get; set; }
     
         /// <summary>The balance of the address in whole network units</summary>
-        [Newtonsoft.Json.JsonProperty("amount_whole_units", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("amount_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Amount_whole_units { get; set; }
     
         /// <summary>The balance of the address in atomic network units</summary>
-        [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Amount { get; set; }
+        [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Amount { get; set; }
     
-        /// <summary>The state of the address if it is cold or restored</summary>
-        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string State { get; set; }
+        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Address_state State { get; set; }
     
         /// <summary>Blockchain explorer link</summary>
-        [Newtonsoft.Json.JsonProperty("blockchain_link", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("blockchain_link", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Blockchain_link { get; set; }
     
         /// <summary>The time this address was created</summary>
-        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Created_at { get; set; }
+        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Created_at { get; set; }
     
         /// <summary>The time this address was last updated</summary>
-        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Updated_at { get; set; }
+        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Updated_at { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
     
     
     }
     
+    /// <summary>The state of the address if it is cold or restored</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Currency 
-    {
-        /// <summary>The type of currency</summary>
-        [Newtonsoft.Json.JsonProperty("symbol", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Symbol { get; set; }
-    
-        /// <summary>The name of the currency</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Transaction 
-    {
-        /// <summary>The ID of the transaction</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
-        /// <summary>The type of transaction for example deposit or withdrawal</summary>
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type { get; set; }
-    
-        /// <summary>The amount to deposit or withdraw in whole network units</summary>
-        [Newtonsoft.Json.JsonProperty("amount_whole_units", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Amount_whole_units { get; set; }
-    
-        /// <summary>The amount to deposit or withdraw in atomic network units</summary>
-        [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? Amount { get; set; }
-    
-        /// <summary>The type of currency</summary>
-        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Currency { get; set; }
-    
-        /// <summary>The fee of the transaction</summary>
-        [Newtonsoft.Json.JsonProperty("fee", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Fee { get; set; }
-    
-        /// <summary>Blockchain transaction hashes</summary>
-        [Newtonsoft.Json.JsonProperty("hashes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> Hashes { get; set; }
-    
-        /// <summary>The time this transaction was created</summary>
-        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Created_at { get; set; }
-    
-        /// <summary>The time this transaction was updated</summary>
-        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Updated_at { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Transaction_request 
-    {
-        /// <summary>The ID of the new transaction</summary>
-        [Newtonsoft.Json.JsonProperty("activity_id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Activity_id { get; set; }
-    
-        /// <summary>The url of the new transaction</summary>
-        [Newtonsoft.Json.JsonProperty("approval_url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Approval_url { get; set; }
-    
-        /// <summary>The amount of the new transaction</summary>
-        [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Amount { get; set; }
-    
-        /// <summary>The account identifier of used for the new transaction</summary>
-        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Account_identifier { get; set; }
-    
-        /// <summary>The destination of the new transaction</summary>
-        [Newtonsoft.Json.JsonProperty("destination", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Destination { get; set; }
-    
-        /// <summary>The currency of the new transaction</summary>
-        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Currency { get; set; }
-    
-        /// <summary>The fees paid for the new transaction</summary>
-        [Newtonsoft.Json.JsonProperty("fee", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Fee { get; set; }
-    
-        /// <summary>The source address of the new transaction</summary>
-        [Newtonsoft.Json.JsonProperty("source", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Source { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class User 
-    {
-        /// <summary>The ID of the user</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
-        /// <summary>The name of the user</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
-        /// <summary>The email of the user</summary>
-        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Email { get; set; }
-    
-        /// <summary>The state of the user for example active or disabled</summary>
-        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string State { get; set; }
-    
-        /// <summary>The users role in the organization</summary>
-        [Newtonsoft.Json.JsonProperty("role", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Role { get; set; }
-    
-        /// <summary>The time the user was created</summary>
-        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Created_at { get; set; }
-    
-        /// <summary>The time the user was last updated</summary>
-        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Updated_at { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Wallet_change 
-    {
-        /// <summary>The ID of the new wallet request</summary>
-        [Newtonsoft.Json.JsonProperty("activity_id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Activity_id { get; set; }
-    
-        /// <summary>The name of the new wallet</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
-        /// <summary>The type of currency of the new wallet</summary>
-        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Currency { get; set; }
-    
-        /// <summary>The url of the new wallet request</summary>
-        [Newtonsoft.Json.JsonProperty("approval_url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Approval_url { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Wallet 
-    {
-        /// <summary>The ID of the wallet</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
-        /// <summary>The name of the wallet</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
-        /// <summary>The current balance in whole network units</summary>
-        [Newtonsoft.Json.JsonProperty("balance_whole_units", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Balance_whole_units { get; set; }
-    
-        /// <summary>The withdrawable balance in whole network units</summary>
-        [Newtonsoft.Json.JsonProperty("withdrawable_balance_whole_units", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Withdrawable_balance_whole_units { get; set; }
-    
-        /// <summary>The current balance in atomic network units</summary>
-        [Newtonsoft.Json.JsonProperty("balance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Balance { get; set; }
-    
-        /// <summary>The current withdrawable balance in atomic network units</summary>
-        [Newtonsoft.Json.JsonProperty("withdrawable_balance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Withdrawable_balance { get; set; }
-    
-        /// <summary>The cold crypto address</summary>
-        [Newtonsoft.Json.JsonProperty("cold_address", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Cold_address { get; set; }
-    
-        /// <summary>The type of currency</summary>
-        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Currency { get; set; }
-    
-        /// <summary>The time the wallet was created</summary>
-        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Created_at { get; set; }
-    
-        /// <summary>The time the wallet was last updated</summary>
-        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Updated_at { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Address_book_address 
-    {
-        /// <summary>The ID of the allowed address</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
-        /// <summary>The name of the allowed address</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
-        /// <summary>The crypto address of the allowed address</summary>
-        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Address { get; set; }
-    
-        /// <summary>The type of currency of the allowed address</summary>
-        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Currency { get; set; }
-    
-        /// <summary>The account identifier associated with the allowed address (for example destination tag or memo value)</summary>
-        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Account_identifier { get; set; }
-    
-        /// <summary>The time the allowed address was created</summary>
-        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Created_at { get; set; }
-    
-        /// <summary>The time the allowed address was last updated</summary>
-        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Updated_at { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Address_book_change 
-    {
-        /// <summary>The ID of the new AddressBook address request</summary>
-        [Newtonsoft.Json.JsonProperty("activity_id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Activity_id { get; set; }
-    
-        /// <summary>The url of the new AddressBook address request</summary>
-        [Newtonsoft.Json.JsonProperty("approval_url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Approval_url { get; set; }
-    
-        /// <summary>The crypto address of the allowed address</summary>
-        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Address { get; set; }
-    
-        /// <summary>The account identifier of the allowed address (for example the destination tag or memo value)</summary>
-        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Account_identifier { get; set; }
-    
-        /// <summary>The type of currency of the allowed address</summary>
-        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Currency { get; set; }
-    
-        /// <summary>The name of the allowed address</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
-    
-    }
-    
-    /// <summary>The state of the address to filter</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public enum State
+    public enum Address_state
     {
         [System.Runtime.Serialization.EnumMember(Value = @"cold")]
         Cold = 0,
@@ -2632,7 +2408,630 @@ namespace Trakx.Coinbase.Custody.ApiClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Payload 
+    public partial class Addresses 
+    {
+        /// <summary>Array of addresses</summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<Address> Data { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Pagination Pagination { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Currency 
+    {
+        /// <summary>The type of currency</summary>
+        [Newtonsoft.Json.JsonProperty("symbol", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Symbol { get; set; }
+    
+        /// <summary>The name of the currency</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Currencies 
+    {
+        /// <summary>Array of currencies</summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<Currency> Data { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Pagination Pagination { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Transaction 
+    {
+        /// <summary>The ID of the transaction</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Transaction_type Type { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Transaction_state State { get; set; }
+    
+        /// <summary>The amount to deposit or withdraw in whole network units</summary>
+        [Newtonsoft.Json.JsonProperty("amount_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Amount_whole_units { get; set; }
+    
+        /// <summary>The amount to deposit or withdraw in atomic network units</summary>
+        [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Amount { get; set; }
+    
+        /// <summary>The type of currency</summary>
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Currency { get; set; }
+    
+        /// <summary>The fee of the transaction</summary>
+        [Newtonsoft.Json.JsonProperty("fee", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Fee { get; set; }
+    
+        /// <summary>Blockchain transaction hashes</summary>
+        [Newtonsoft.Json.JsonProperty("hashes", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> Hashes { get; set; }
+    
+        /// <summary>The time this transaction was created</summary>
+        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Created_at { get; set; }
+    
+        /// <summary>The time this transaction was updated</summary>
+        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Updated_at { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    /// <summary>The type of the transaction</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public enum Transaction_type
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""deposit"": null,
+      ""description"": ""On-chain deposit of funds to an associated address""
+    }")]
+        _____deposit_null_____description_OnChain_deposit_of_funds_to_an_associated_address___ = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""withdrawal"": null,
+      ""description"": ""On-chain withdrawal of funds authorized by account consensus.""
+    }")]
+        _____withdrawal_null_____description_OnChain_withdrawal_of_funds_authorized_by_account_consensus____ = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""reward"": null,
+      ""description"": ""Reward payment to an associated address for a staked asset""
+    }")]
+        _____reward_null_____description_Reward_payment_to_an_associated_address_for_a_staked_asset___ = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""sweep_withdrawal"": null,
+      ""description"": ""Internal automated withdrawal from a restored address to a cold address""
+    }")]
+        _____sweep_withdrawal_null_____description_Internal_automated_withdrawal_from_a_restored_address_to_a_cold_address___ = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""sweep_deposit"": null,
+      ""description"": ""Internal automated deposit to a cold address from a restored address""
+    }")]
+        _____sweep_deposit_null_____description_Internal_automated_deposit_to_a_cold_address_from_a_restored_address___ = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""proxy_withdrawal"": null,
+      ""description"": ""On-chain withdrawal of funds from proxy contract to cold address""
+    }")]
+        _____proxy_withdrawal_null_____description_OnChain_withdrawal_of_funds_from_proxy_contract_to_cold_address___ = 5,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""proxy_deposit"": null,
+      ""description"": ""On-chain deposit of funds into proxy contract from cold address""
+    }")]
+        _____proxy_deposit_null_____description_OnChain_deposit_of_funds_into_proxy_contract_from_cold_address___ = 6,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""coinbase_deposit"": null,
+      ""description"": ""Coinbase Custody network fee payment for an eligible withdrawal""
+    }")]
+        _____coinbase_deposit_null_____description_Coinbase_Custody_network_fee_payment_for_an_eligible_withdrawal___ = 7,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""key_registration"": null,
+      ""description"": ""Registration of a crypto key for staking purposes""
+    }")]
+        _____key_registration_null_____description_Registration_of_a_crypto_key_for_staking_purposes___ = 8,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""billing_withdrawal"": null,
+      ""description"": ""Coinbase Custody automated invoice settlement payment""
+    }")]
+        _____billing_withdrawal_null_____description_Coinbase_Custody_automated_invoice_settlement_payment___ = 9,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""delegation"": null,
+      ""description"": ""On-chain delegation of funds or votes to a destination address""
+    }")]
+        _____delegation_null_____description_OnChain_delegation_of_funds_or_votes_to_a_destination_address___ = 10,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""undelegation"": null,
+      ""description"": ""On-chain transaction to revoke a previous delegation of funds or votes""
+    }")]
+        _____undelegation_null_____description_OnChain_transaction_to_revoke_a_previous_delegation_of_funds_or_votes___ = 11,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""restake"": null,
+      ""description"": ""On-chain transaction that stakes/bonds additional funds and or pending rewards""
+    }")]
+        _____restake_null_____description_OnChain_transaction_that_stakes_bonds_additional_funds_and_or_pending_rewards___ = 12,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""complete_unbonding"": null,
+      ""description"": ""On-chain event at the end of the bonding period which signals that bonded funds are now liquid again""
+    }")]
+        _____complete_unbonding_null_____description_OnChain_event_at_the_end_of_the_bonding_period_which_signals_that_bonded_funds_are_now_liquid_again___ = 13,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""coinbase_refund"": null,
+      ""description"": ""Coinbase Custody refund for the leftover amount for a CPFP(child pays for parent)transaction""
+    }")]
+        _____coinbase_refund_null_____description_Coinbase_Custody_refund_for_the_leftover_amount_for_a_CPFP_child_pays_for_parent_transaction___ = 14,
+    
+    }
+    
+    /// <summary>The state of the transaction</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public enum Transaction_state
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""created"": {
+        ""description"": ""Transaction has been created by an account member""
+      }
+    }")]
+        _____created________description_Transaction_has_been_created_by_an_account_member________ = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""requested"": {
+        ""description"": ""Transaction has been authorized by account consensus""
+      }
+    }")]
+        _____requested________description_Transaction_has_been_authorized_by_account_consensus________ = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""approved"": {
+        ""description"": ""Transaction has been authorized by Coinbase Custody""
+      }
+    }")]
+        _____approved________description_Transaction_has_been_authorized_by_Coinbase_Custody________ = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""gassing"": {
+        ""description"": ""Transaction is pending coinbase_deposit fee funding""
+      }
+    }")]
+        _____gassing________description_Transaction_is_pending_coinbase_deposit_fee_funding________ = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""planned"": {
+        ""description"": ""Transaction is planned for broadcast""
+      }
+    }")]
+        _____planned________description_Transaction_is_planned_for_broadcast________ = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""restored"": {
+        ""description"": ""Transaction broadcast is pending secure address restore""
+      }
+    }")]
+        _____restored________description_Transaction_broadcast_is_pending_secure_address_restore________ = 5,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""done"": {
+        ""description"": ""Transaction has been broadcast and confirmed on-chain""
+      }
+    }")]
+        _____done________description_Transaction_has_been_broadcast_and_confirmed_onChain________ = 6,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""imported"": {
+        ""description"": ""Transaction has been detected and credited""
+      }
+    }")]
+        _____imported________description_Transaction_has_been_detected_and_credited________ = 7,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""cancelled"": {
+        ""description"": ""Transaction has been cancelled""
+      }
+    }")]
+        _____cancelled________description_Transaction_has_been_cancelled________ = 8,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""user_rejected"": {
+        ""description"": ""Transaction has been rejected by an account member""
+      }
+    }")]
+        _____user_rejected________description_Transaction_has_been_rejected_by_an_account_member________ = 9,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"{
+      ""rejected"": {
+        ""description"": ""Transaction has been rejected by Coinbase Custody""
+      }
+    }")]
+        _____rejected________description_Transaction_has_been_rejected_by_Coinbase_Custody________ = 10,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Transactions 
+    {
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<Transaction> Data { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Pagination Pagination { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Transaction_request 
+    {
+        /// <summary>The ID of the new transaction</summary>
+        [Newtonsoft.Json.JsonProperty("activity_id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Activity_id { get; set; }
+    
+        /// <summary>The url of the new transaction</summary>
+        [Newtonsoft.Json.JsonProperty("approval_url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Approval_url { get; set; }
+    
+        /// <summary>The amount of the new transaction</summary>
+        [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Amount { get; set; }
+    
+        /// <summary>The account identifier of used for the new transaction</summary>
+        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Account_identifier { get; set; }
+    
+        /// <summary>The destination of the new transaction</summary>
+        [Newtonsoft.Json.JsonProperty("destination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Destination { get; set; }
+    
+        /// <summary>The currency of the new transaction</summary>
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Currency { get; set; }
+    
+        /// <summary>The fees paid for the new transaction</summary>
+        [Newtonsoft.Json.JsonProperty("fee", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Fee { get; set; }
+    
+        /// <summary>The source address of the new transaction</summary>
+        [Newtonsoft.Json.JsonProperty("source", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Source { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class User 
+    {
+        /// <summary>The ID of the user</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        /// <summary>The name of the user</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The email of the user</summary>
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Email { get; set; }
+    
+        /// <summary>The state of the user for example active or disabled</summary>
+        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string State { get; set; }
+    
+        /// <summary>The users role in the organization</summary>
+        [Newtonsoft.Json.JsonProperty("role", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Role { get; set; }
+    
+        /// <summary>The time the user was created</summary>
+        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Created_at { get; set; }
+    
+        /// <summary>The time the user was last updated</summary>
+        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Updated_at { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Users 
+    {
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<User> Data { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Pagination Pagination { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Wallet_change 
+    {
+        /// <summary>The ID of the new wallet request</summary>
+        [Newtonsoft.Json.JsonProperty("activity_id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Activity_id { get; set; }
+    
+        /// <summary>The name of the new wallet</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The type of currency of the new wallet</summary>
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Currency { get; set; }
+    
+        /// <summary>The url of the new wallet request</summary>
+        [Newtonsoft.Json.JsonProperty("approval_url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Approval_url { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Wallet 
+    {
+        /// <summary>The ID of the wallet</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        /// <summary>The name of the wallet</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The current balance in whole network units</summary>
+        [Newtonsoft.Json.JsonProperty("balance_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Balance_whole_units { get; set; }
+    
+        /// <summary>The withdrawable balance in whole network units</summary>
+        [Newtonsoft.Json.JsonProperty("withdrawable_balance_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Withdrawable_balance_whole_units { get; set; }
+    
+        /// <summary>The current balance in atomic network units</summary>
+        [Newtonsoft.Json.JsonProperty("balance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Balance { get; set; }
+    
+        /// <summary>The current withdrawable balance in atomic network units</summary>
+        [Newtonsoft.Json.JsonProperty("withdrawable_balance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Withdrawable_balance { get; set; }
+    
+        /// <summary>The cold crypto address</summary>
+        [Newtonsoft.Json.JsonProperty("cold_address", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Cold_address { get; set; }
+    
+        /// <summary>The type of currency</summary>
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Currency { get; set; }
+    
+        /// <summary>The time the wallet was created</summary>
+        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Created_at { get; set; }
+    
+        /// <summary>The time the wallet was last updated</summary>
+        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Updated_at { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Wallets 
+    {
+        /// <summary>Array of wallets</summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<Wallet> Data { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("pagination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Pagination Pagination { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Address_book_address 
+    {
+        /// <summary>The ID of the allowed address</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        /// <summary>The name of the allowed address</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        /// <summary>The crypto address of the allowed address</summary>
+        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address { get; set; }
+    
+        /// <summary>The type of currency of the allowed address</summary>
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Currency { get; set; }
+    
+        /// <summary>The account identifier associated with the allowed address (for example destination tag or memo value)</summary>
+        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Account_identifier { get; set; }
+    
+        /// <summary>The time the allowed address was created</summary>
+        [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Created_at { get; set; }
+    
+        /// <summary>The time the allowed address was last updated</summary>
+        [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Updated_at { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Address_book_change 
+    {
+        /// <summary>The ID of the new address book address request</summary>
+        [Newtonsoft.Json.JsonProperty("activity_id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Activity_id { get; set; }
+    
+        /// <summary>The url of the new address book address request</summary>
+        [Newtonsoft.Json.JsonProperty("approval_url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Approval_url { get; set; }
+    
+        /// <summary>The crypto address of the allowed address</summary>
+        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address { get; set; }
+    
+        /// <summary>The account identifier of the allowed address (for example the destination tag or memo value)</summary>
+        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Account_identifier { get; set; }
+    
+        /// <summary>The type of currency of the allowed address</summary>
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Currency { get; set; }
+    
+        /// <summary>The name of the allowed address</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Body 
     {
         /// <summary>The source wallet id for the transaction</summary>
         [Newtonsoft.Json.JsonProperty("source", Required = Newtonsoft.Json.Required.Always)]
@@ -2640,7 +3039,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         public string Source { get; set; }
     
         /// <summary>A fiat currency symbol such as USD. If provided Custody will automatically convert the amount value into crypto units</summary>
-        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Currency { get; set; }
     
         /// <summary>The amount of the transaction in whole units (e.g. "1.01")</summary>
@@ -2654,14 +3053,23 @@ namespace Trakx.Coinbase.Custody.ApiClient
         public string Destination { get; set; }
     
         /// <summary>The account identifier of the transaction (for example destination tag or memo value)</summary>
-        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Account_identifier { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
     
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Payload2 
+    public partial class Body2 
     {
         /// <summary>The currency of the new wallet</summary>
         [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Always)]
@@ -2673,11 +3081,20 @@ namespace Trakx.Coinbase.Custody.ApiClient
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
     
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Payload3 
+    public partial class Body3 
     {
         /// <summary>The currency of the new allowed address</summary>
         [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Always)]
@@ -2695,8 +3112,17 @@ namespace Trakx.Coinbase.Custody.ApiClient
         public string Address { get; set; }
     
         /// <summary>The account identifier of the new allowed address</summary>
-        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("account_identifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Account_identifier { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
     
     
     }
@@ -2704,9 +3130,18 @@ namespace Trakx.Coinbase.Custody.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Response 
     {
-        /// <summary>Array of addresses</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<Address> Data { get; set; }
+        /// <summary>Array of currencies</summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<Currency> Data { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
     
     
     }
@@ -2714,49 +3149,18 @@ namespace Trakx.Coinbase.Custody.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Response2 
     {
-        /// <summary>Array of currencies</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<Currency> Data { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Response3 
-    {
-        /// <summary>Array of transactions</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<Transaction> Data { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Response4 
-    {
-        /// <summary>Array of users</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<User> Data { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Response5 
-    {
-        /// <summary>Array of wallets</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<Wallet> Data { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Response6 
-    {
-        /// <summary>Array of addresses from the AddressBook</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        /// <summary>Array of addresses from the address book</summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<Address_book_address> Data { get; set; }
+    
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
     
     
     }
