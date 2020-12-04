@@ -7,7 +7,8 @@ namespace Trakx.Coinbase.Custody.ApiClient
     {
         private readonly ICredentialsProvider _credentialsProvider;
 
-        public ClientConfigurator(ICredentialsProvider credentialsProvider, IOptions<CoinbaseCustodyApiConfiguration> configuration)
+        public ClientConfigurator(ICredentialsProvider credentialsProvider, 
+            IOptions<CoinbaseCustodyApiConfiguration> configuration)
         {
             _credentialsProvider = credentialsProvider;
             CustodyApiConfiguration = configuration.Value;

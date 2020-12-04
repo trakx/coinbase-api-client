@@ -35,6 +35,15 @@ paths:
           description: The state of the address to filter
           schema:
             $ref: "#/components/schemas/address_state"
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"            
       responses:
         "200":
           description: filtered addresses by wallet_id
@@ -109,22 +118,20 @@ paths:
             type: string
         - name: limit
           in: query
-          description: The number of symbols to retrieve
-          schema:
-            type: string
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: with READ_WRITE key
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    description: Array of currencies
-                    items:
-                      $ref: "#/components/schemas/currency"
+                $ref: "#/components/schemas/currencies"
               examples:
                 response:
                   value:
@@ -252,6 +259,15 @@ paths:
           description: The human id to filter
           schema:
             type: string
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: filtered by human id
@@ -381,6 +397,16 @@ paths:
       summary: Gets a list of users
       description: Retrieve a list of the users that belong to your organization.
       operationId: GetUsers
+      parameters:
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: users found
@@ -479,6 +505,15 @@ paths:
           description: The currency to filter
           schema:
             type: string
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: filtered wallets found by currency
@@ -611,6 +646,15 @@ paths:
           description: The address to filter by
           schema:
             type: string
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: filtered addresses found by currency
@@ -725,16 +769,11 @@ components:
       type: object
       properties: 
         before:
-          type: string
-          description: Id of the last element to be found in the page before the current one.
+          $ref: "#/components/schemas/before"
         after:
-          type: string
-          description: Id of the first element to be found in the page after the current one.
+          $ref: "#/components/schemas/after"
         limit:
-          type: number
-          format: int32
-          default: 25
-          description: Maximum number of items to return per page of results.
+          $ref: "#/components/schemas/limit"
     address:
       type: object
       properties:
@@ -834,7 +873,7 @@ components:
         state:
           $ref: "#/components/schemas/transaction_state"
         amount_whole_units:
-          type: string
+          type: number
           description: The amount to deposit or withdraw in whole network units
         amount:
           type: number
@@ -860,64 +899,66 @@ components:
           description: The time this transaction was updated
     transaction_type:
       type: string
-      description: The type of the transaction
       enum:
-      - deposit:
-        description: On-chain deposit of funds to an associated address
-      - withdrawal:
-        description: On-chain withdrawal of funds authorized by account consensus.
-      - reward:
-        description: Reward payment to an associated address for a staked asset
-      - sweep_withdrawal:
-        description: Internal automated withdrawal from a restored address to a cold address
-      - sweep_deposit:
-        description: Internal automated deposit to a cold address from a restored address
-      - proxy_withdrawal:
-        description: On-chain withdrawal of funds from proxy contract to cold address
-      - proxy_deposit:
-        description: On-chain deposit of funds into proxy contract from cold address
-      - coinbase_deposit:
-        description: Coinbase Custody network fee payment for an eligible withdrawal
-      - key_registration:
-        description: Registration of a crypto key for staking purposes
-      - billing_withdrawal:
-        description: Coinbase Custody automated invoice settlement payment
-      - delegation:
-        description: On-chain delegation of funds or votes to a destination address
-      - undelegation:
-        description: On-chain transaction to revoke a previous delegation of funds or votes
-      - restake:
-        description: On-chain transaction that stakes/bonds additional funds and or pending rewards
-      - complete_unbonding:
-        description: On-chain event at the end of the bonding period which signals that bonded funds are now liquid again
-      - coinbase_refund:
-        description: Coinbase Custody refund for the leftover amount for a CPFP(child pays for parent)transaction
+        - deposit
+        - withdrawal
+        - reward
+        - sweep_withdrawal
+        - sweep_deposit
+        - proxy_withdrawal
+        - proxy_deposit
+        - coinbase_deposit
+        - key_registration
+        - billing_withdrawal
+        - delegation
+        - undelegation
+        - restake
+        - complete_unbonding
+        - coinbase_refund
+      description: >
+        The type of the transaction
+        * deposit: On-chain deposit of funds to an associated address
+        * withdrawal: On-chain withdrawal of funds authorized by account consensus.
+        * reward: Reward payment to an associated address for a staked asset
+        * sweep_withdrawal: Internal automated withdrawal from a restored address to a cold address
+        * sweep_deposit: Internal automated deposit to a cold address from a restored address
+        * proxy_withdrawal: On-chain withdrawal of funds from proxy contract to cold address
+        * proxy_deposit: On-chain deposit of funds into proxy contract from cold address
+        * coinbase_deposit: Coinbase Custody network fee payment for an eligible withdrawal
+        * key_registration: Registration of a crypto key for staking purposes
+        * billing_withdrawal: Coinbase Custody automated invoice settlement payment
+        * delegation: On-chain delegation of funds or votes to a destination address
+        * undelegation: On-chain transaction to revoke a previous delegation of funds or votes
+        * restake: On-chain transaction that stakes/bonds additional funds and or pending rewards
+        * complete_unbonding: On-chain event at the end of the bonding period which signals that bonded funds are now liquid again
+        * coinbase_refund: Coinbase Custody refund for the leftover amount for a CPFP(child pays for parent)transaction
     transaction_state:
       type: string
-      description: The state of the transaction
       enum:
-      - created:
-          description: Transaction has been created by an account member
-      - requested:
-          description: Transaction has been authorized by account consensus
-      - approved:
-          description: Transaction has been authorized by Coinbase Custody
-      - gassing:
-          description: Transaction is pending coinbase_deposit fee funding
-      - planned:
-          description: Transaction is planned for broadcast
-      - restored:
-          description: Transaction broadcast is pending secure address restore
-      - done:
-          description: Transaction has been broadcast and confirmed on-chain
-      - imported:
-          description: Transaction has been detected and credited
-      - cancelled:
-          description: Transaction has been cancelled
-      - user_rejected:
-          description: Transaction has been rejected by an account member
-      - rejected:
-          description: Transaction has been rejected by Coinbase Custody
+      - created
+      - requested
+      - approved
+      - gassing
+      - planned
+      - restored
+      - done
+      - imported
+      - cancelled
+      - user_rejected
+      - rejected
+      description: >
+        The state of the transaction
+        * created: Transaction has been created by an account member
+        * requested: Transaction has been authorized by account consensus
+        * approved: Transaction has been authorized by Coinbase Custody
+        * gassing: Transaction is pending coinbase_deposit fee funding
+        * planned: Transaction is planned for broadcast
+        * restored: Transaction broadcast is pending secure address restore
+        * done: Transaction has been broadcast and confirmed on-chain
+        * imported: Transaction has been detected and credited
+        * cancelled: Transaction has been cancelled
+        * user_rejected: Transaction has been rejected by an account member
+        * rejected: Transaction has been rejected by Coinbase Custody
     transactions:
       type: object
       properties:
@@ -1035,16 +1076,20 @@ components:
           type: string
           description: The name of the wallet
         balance_whole_units:
-          type: string
+          type: number
+          fomat: double
           description: The current balance in whole network units
         withdrawable_balance_whole_units:
-          type: string
+          type: number
+          fomat: double
           description: The withdrawable balance in whole network units
         balance:
           type: string
+          format: int64
           description: The current balance in atomic network units
         withdrawable_balance:
           type: string
+          format: int64
           description: The current withdrawable balance in atomic network units
         cold_address:
           type: string
@@ -1054,9 +1099,11 @@ components:
           description: The type of currency
         created_at:
           type: string
+          format: date-time
           description: The time the wallet was created
         updated_at:
           type: string
+          format: date-time
           description: The time the wallet was last updated
     wallets:
       type: object
@@ -1148,3 +1195,13 @@ components:
         name:
           type: string
           description: The name of the allowed address
+    limit:
+      type: integer
+      description: Maximum number of records to be returned by page of result.
+      default: 25
+    before:
+      type: string
+      description: Id of the last record before the current set's first record.
+    after:
+      type: string
+      description: Id of the first record after the current set's last record.
