@@ -8,7 +8,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
 {
     public partial class Transactions : IPagedResponse<Transaction> { }
 
-    internal static class TransactionsClientExtensions
+    public static class TransactionsClientExtensions
     {
         public static async IAsyncEnumerable<Transaction> GetTransactions(
             this ITransactionsClient transactionsClient,
@@ -39,7 +39,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
     }
 
     public partial class Users : IPagedResponse<User> { }
-    internal static class UsersClientExtensions
+    public static class UsersClientExtensions
     {
         public static async IAsyncEnumerable<User> GetUsers(this IUsersClient usersClient, Pagination? pagination = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -60,7 +60,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
     }
 
     public partial class Wallets : IPagedResponse<Wallet> { }
-    internal static class WalletsClientExtensions
+    public static class WalletsClientExtensions
     {
         public static async IAsyncEnumerable<Wallet> GetWallets(this IWalletsClient walletsClient,
             string? currency = null, Pagination? pagination = null,
@@ -82,7 +82,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
     }
 
     public partial class Addresses : IPagedResponse<Address> { }
-    internal static class AddressesClientExtensions
+    public static class AddressesClientExtensions
     {
         public static async IAsyncEnumerable<Address> GetAddresses(
             this IAddressesClient addressClient,
@@ -108,7 +108,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
     }
 
     public partial class Currencies : IPagedResponse<Currency> { }
-    internal static class CurrenciesClientExtensions
+    public static class CurrenciesClientExtensions
     {
         public static async IAsyncEnumerable<Currency> GetCurrencies(
             this ICurrenciesClient currenciesClient,
