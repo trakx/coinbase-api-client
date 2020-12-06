@@ -34,47 +34,23 @@ paths:
           in: query
           description: The state of the address to filter
           schema:
-            type: string
-            enum:
-              - cold
-              - restore_in_progress
-              - restored
+            $ref: "#/components/schemas/address_state"
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"            
       responses:
         "200":
           description: filtered addresses by wallet_id
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    description: Array of addresses
-                    items:
-                      $ref: "#/components/schemas/address"
-              examples:
-                response:
-                  value:
-                    data:
-                      - address: fake_eth_cold_address
-                        state: cold
-                        balance: 0
-                        blockchain_link: https://etherscan.io/address/fake_eth_cold_address
-                        created_at: 2020-07-22T18:55:22.0120000Z
-                        updated_at: 2020-07-22T18:55:22.0120000Z
-                        currency: ETH
-                        balance_whole_units: 0
-                      - address: fake_btc_cold_address
-                        state: cold
-                        balance: 0
-                        blockchain_link: https://live.blockcypher.com/btc/address/fake_btc_cold_address
-                        created_at: 2020-07-22T18:55:21.9450000Z
-                        updated_at: 2020-07-22T18:55:21.9450000Z
-                        currency: BTC
-                        balance_whole_units: 0
-                    pagination:
-                      before: fake_eth_cold_address
-                      after: fake_btc_cold_address
+                $ref: "#/components/schemas/addresses"
         "401":
           description: unauthorized with bad passphrase
       security:
@@ -87,7 +63,7 @@ paths:
       summary: Gets a single address
       description: "Get information about a single crypto address. Use this endpoint when
         you know the specific address you want to retrieve.
- Addresses and wallets differ slightly. Coinbase Custody
+        Addresses and wallets differ slightly. Coinbase Custody
         considers addresses one-time use. However, a wallet can be used
         indefinitely. Coinbase Custody will automatically rotate the underlying
         cold address associated with the wallet after each withdrawal to keep
@@ -142,22 +118,20 @@ paths:
             type: string
         - name: limit
           in: query
-          description: The number of symbols to retrieve
-          schema:
-            type: string
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: with READ_WRITE key
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    description: Array of currencies
-                    items:
-                      $ref: "#/components/schemas/currency"
+                $ref: "#/components/schemas/currencies"
               examples:
                 response:
                   value:
@@ -257,12 +231,12 @@ paths:
           in: query
           description: The state of transactions to filter
           schema:
-            type: string
+            $ref: "#/components/schemas/transaction_state"
         - name: type
           in: query
           description: The type of transactions to filter
           schema:
-            type: string
+            $ref: "#/components/schemas/transaction_type"
         - name: wallet_id
           in: query
           description: The wallet id to filter
@@ -273,16 +247,27 @@ paths:
           description: The start time to filter
           schema:
             type: string
+            format: date-time
         - name: end_time
           in: query
           description: The end time to filter
           schema:
             type: string
+            format: date-time
         - name: human_id
           in: query
           description: The human id to filter
           schema:
             type: string
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: filtered by human id
@@ -412,19 +397,23 @@ paths:
       summary: Gets a list of users
       description: Retrieve a list of the users that belong to your organization.
       operationId: GetUsers
+      parameters:
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: users found
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    description: Array of users
-                    items:
-                      $ref: "#/components/schemas/user"
+                $ref: "#/components/schemas/users"
               examples:
                 response:
                   value:
@@ -516,50 +505,22 @@ paths:
           description: The currency to filter
           schema:
             type: string
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: filtered wallets found by currency
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    description: Array of wallets
-                    items:
-                      $ref: "#/components/schemas/wallet"
-              examples:
-                response:
-                  value:
-                    data:
-                      - id: 9ca8d02d-563e-4b4f-b5c9-d9d28fb3ac0a
-                        name: test
-                        created_at: 2020-07-22T18:56:07.5700000Z
-                        updated_at: 2020-07-22T18:56:07.5700000Z
-                        balance: 0
-                        balance_whole_units: 0
-                        withdrawable_balance: 0
-                        withdrawable_balance_whole_units: 0
-                        unvested_balance: 0
-                        unvested_balance_whole_units: 0
-                        cold_address: fake_eth_cold_address
-                        currency: ETH
-                      - id: 90b582e4-2c3e-4ee0-ae15-13036e5de0fd
-                        name: test
-                        created_at: 2020-07-22T18:56:07.5500000Z
-                        updated_at: 2020-07-22T18:56:07.5500000Z
-                        balance: 0
-                        balance_whole_units: 0
-                        withdrawable_balance: 0
-                        withdrawable_balance_whole_units: 0
-                        unvested_balance: 0
-                        unvested_balance_whole_units: 0
-                        cold_address: fake_btc_cold_address
-                        currency: BTC
-                    pagination:
-                      before: 9ca8d02d-563e-4b4f-b5c9-d9d28fb3ac0a
-                      after: 90b582e4-2c3e-4ee0-ae15-13036e5de0fd
+                $ref: "#/components/schemas/wallets"
         "401":
           description: unauthorized with bad passphrase
       security:
@@ -659,7 +620,7 @@ paths:
   /api/v1/address_book:
     get:
       tags:
-        - Address Book
+        - AddressBook
       summary: Gets a list of address book addresses (beta)
       description: Retrieve a list of addresses in your organization's address book. The
         response value can be filtered by query parameters.
@@ -685,6 +646,15 @@ paths:
           description: The address to filter by
           schema:
             type: string
+        - name: limit
+          in: query
+          $schema: "#/components/schemas/limit"
+        - name: before
+          in: query
+          $schema: "#/components/schemas/before"
+        - name: after
+          in: query
+          $schema: "#/components/schemas/after"
       responses:
         "200":
           description: filtered addresses found by currency
@@ -725,7 +695,7 @@ paths:
           Passphrase: []
     post:
       tags:
-        - Address Book
+        - AddressBook
       summary: Creates a new address book address (beta)
       description: Request a new address be added to your organization's address book. This
         request is subject to in-app consensus from your organization's
@@ -799,15 +769,11 @@ components:
       type: object
       properties: 
         before:
-          type: string
-          description: Id of the last element to be found in the page before the current one.
+          $ref: "#/components/schemas/before"
         after:
-          type: string
-          description: Id of the first element to be found in the page after the current one.
+          $ref: "#/components/schemas/after"
         limit:
-          type: number
-          default: 25
-          description: Maximum number of items to return per page of results.
+          $ref: "#/components/schemas/limit"
     address:
       type: object
       properties:
@@ -825,16 +791,58 @@ components:
           description: The balance of the address in atomic network units
         state:
           type: string
-          description: The state of the address if it is cold or restored
+          $ref: "#/components/schemas/address_state"
         blockchain_link:
           type: string
           description: Blockchain explorer link
         created_at:
           type: string
+          format: date-time
           description: The time this address was created
         updated_at:
           type: string
+          format: date-time
           description: The time this address was last updated
+    address_state:
+      description: The state of the address if it is cold or restored
+      type: string
+      enum:
+        - cold
+        - restore_in_progress
+        - restored
+    addresses:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Array of addresses
+          items:
+            $ref: "#/components/schemas/address"
+        pagination:
+          $ref: "#/components/schemas/pagination"
+      example:
+        response:
+          value:
+            data:
+              - address: fake_eth_cold_address
+                state: cold
+                balance: 0
+                blockchain_link: https://etherscan.io/address/fake_eth_cold_address
+                created_at: 2020-07-22T18:55:22.0120000Z
+                updated_at: 2020-07-22T18:55:22.0120000Z
+                currency: ETH
+                balance_whole_units: 0
+              - address: fake_btc_cold_address
+                state: cold
+                balance: 0
+                blockchain_link: https://live.blockcypher.com/btc/address/fake_btc_cold_address
+                created_at: 2020-07-22T18:55:21.9450000Z
+                updated_at: 2020-07-22T18:55:21.9450000Z
+                currency: BTC
+                balance_whole_units: 0
+            pagination:
+              before: fake_eth_cold_address
+              after: fake_btc_cold_address
     currency:
       type: object
       properties:
@@ -844,6 +852,16 @@ components:
         name:
           type: string
           description: The name of the currency
+    currencies:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Array of currencies
+          items:
+            $ref: "#/components/schemas/currency"
+        pagination:
+          $ref: "#/components/schemas/pagination"
     transaction:
       type: object
       properties:
@@ -851,10 +869,11 @@ components:
           type: string
           description: The ID of the transaction
         type:
-          type: string
-          description: The type of transaction for example deposit or withdrawal
+          $ref: "#/components/schemas/transaction_type"
+        state:
+          $ref: "#/components/schemas/transaction_state"
         amount_whole_units:
-          type: string
+          type: number
           description: The amount to deposit or withdraw in whole network units
         amount:
           type: number
@@ -872,10 +891,74 @@ components:
             type: string
         created_at:
           type: string
+          format: date-time
           description: The time this transaction was created
         updated_at:
           type: string
+          format: date-time
           description: The time this transaction was updated
+    transaction_type:
+      type: string
+      enum:
+        - deposit
+        - withdrawal
+        - reward
+        - sweep_withdrawal
+        - sweep_deposit
+        - proxy_withdrawal
+        - proxy_deposit
+        - coinbase_deposit
+        - key_registration
+        - billing_withdrawal
+        - delegation
+        - undelegation
+        - restake
+        - complete_unbonding
+        - coinbase_refund
+      description: >
+        The type of the transaction
+        * deposit: On-chain deposit of funds to an associated address
+        * withdrawal: On-chain withdrawal of funds authorized by account consensus.
+        * reward: Reward payment to an associated address for a staked asset
+        * sweep_withdrawal: Internal automated withdrawal from a restored address to a cold address
+        * sweep_deposit: Internal automated deposit to a cold address from a restored address
+        * proxy_withdrawal: On-chain withdrawal of funds from proxy contract to cold address
+        * proxy_deposit: On-chain deposit of funds into proxy contract from cold address
+        * coinbase_deposit: Coinbase Custody network fee payment for an eligible withdrawal
+        * key_registration: Registration of a crypto key for staking purposes
+        * billing_withdrawal: Coinbase Custody automated invoice settlement payment
+        * delegation: On-chain delegation of funds or votes to a destination address
+        * undelegation: On-chain transaction to revoke a previous delegation of funds or votes
+        * restake: On-chain transaction that stakes/bonds additional funds and or pending rewards
+        * complete_unbonding: On-chain event at the end of the bonding period which signals that bonded funds are now liquid again
+        * coinbase_refund: Coinbase Custody refund for the leftover amount for a CPFP(child pays for parent)transaction
+    transaction_state:
+      type: string
+      enum:
+      - created
+      - requested
+      - approved
+      - gassing
+      - planned
+      - restored
+      - done
+      - imported
+      - cancelled
+      - user_rejected
+      - rejected
+      description: >
+        The state of the transaction
+        * created: Transaction has been created by an account member
+        * requested: Transaction has been authorized by account consensus
+        * approved: Transaction has been authorized by Coinbase Custody
+        * gassing: Transaction is pending coinbase_deposit fee funding
+        * planned: Transaction is planned for broadcast
+        * restored: Transaction broadcast is pending secure address restore
+        * done: Transaction has been broadcast and confirmed on-chain
+        * imported: Transaction has been detected and credited
+        * cancelled: Transaction has been cancelled
+        * user_rejected: Transaction has been rejected by an account member
+        * rejected: Transaction has been rejected by Coinbase Custody
     transactions:
       type: object
       properties:
@@ -953,10 +1036,21 @@ components:
           description: The users role in the organization
         created_at:
           type: string
+          format: date-time
           description: The time the user was created
         updated_at:
           type: string
+          format: date-time
           description: The time the user was last updated
+    users:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/user"
+        pagination:
+          $ref: "#/components/schemas/pagination"
     wallet_change:
       type: object
       properties:
@@ -982,16 +1076,20 @@ components:
           type: string
           description: The name of the wallet
         balance_whole_units:
-          type: string
+          type: number
+          fomat: double
           description: The current balance in whole network units
         withdrawable_balance_whole_units:
-          type: string
+          type: number
+          fomat: double
           description: The withdrawable balance in whole network units
         balance:
           type: string
+          format: int64
           description: The current balance in atomic network units
         withdrawable_balance:
           type: string
+          format: int64
           description: The current withdrawable balance in atomic network units
         cold_address:
           type: string
@@ -1001,10 +1099,53 @@ components:
           description: The type of currency
         created_at:
           type: string
+          format: date-time
           description: The time the wallet was created
         updated_at:
           type: string
+          format: date-time
           description: The time the wallet was last updated
+    wallets:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Array of wallets
+          items:
+            $ref: "#/components/schemas/wallet"
+        pagination:
+          $ref: "#/components/schemas/pagination"
+      example:
+        response:
+          value:
+            data:
+              - id: 9ca8d02d-563e-4b4f-b5c9-d9d28fb3ac0a
+                name: test
+                created_at: 2020-07-22T18:56:07.5700000Z
+                updated_at: 2020-07-22T18:56:07.5700000Z
+                balance: 0
+                balance_whole_units: 0
+                withdrawable_balance: 0
+                withdrawable_balance_whole_units: 0
+                unvested_balance: 0
+                unvested_balance_whole_units: 0
+                cold_address: fake_eth_cold_address
+                currency: ETH
+              - id: 90b582e4-2c3e-4ee0-ae15-13036e5de0fd
+                name: test
+                created_at: 2020-07-22T18:56:07.5500000Z
+                updated_at: 2020-07-22T18:56:07.5500000Z
+                balance: 0
+                balance_whole_units: 0
+                withdrawable_balance: 0
+                withdrawable_balance_whole_units: 0
+                unvested_balance: 0
+                unvested_balance_whole_units: 0
+                cold_address: fake_btc_cold_address
+                currency: BTC
+            pagination:
+              before: 9ca8d02d-563e-4b4f-b5c9-d9d28fb3ac0a
+              after: 90b582e4-2c3e-4ee0-ae15-13036e5de0fd
     address_book_address:
       type: object
       properties:
@@ -1026,9 +1167,11 @@ components:
             example destination tag or memo value)
         created_at:
           type: string
+          format: date-time
           description: The time the allowed address was created
         updated_at:
           type: string
+          format: date-time
           description: The time the allowed address was last updated
     address_book_change:
       type: object
@@ -1052,3 +1195,13 @@ components:
         name:
           type: string
           description: The name of the allowed address
+    limit:
+      type: integer
+      description: Maximum number of records to be returned by page of result.
+      default: 25
+    before:
+      type: string
+      description: Id of the last record before the current set's first record.
+    after:
+      type: string
+      description: Id of the first record after the current set's last record.
