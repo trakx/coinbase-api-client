@@ -848,10 +848,13 @@ components:
       properties:
         symbol:
           type: string
-          description: The type of currency
+          description: The type of currency.
         name:
           type: string
-          description: The name of the currency
+          description: The name of the currency.
+        decimals:
+          type: integer
+          description: Number of decimals supported by the currency.
     currencies:
       type: object
       properties:
@@ -867,36 +870,46 @@ components:
       properties:
         id:
           type: string
-          description: The ID of the transaction
+          description: The ID of the transaction.
         type:
           $ref: "#/components/schemas/transaction_type"
         state:
           $ref: "#/components/schemas/transaction_state"
         amount_whole_units:
           type: number
-          description: The amount to deposit or withdraw in whole network units
+          description: The amount to deposit or withdraw in whole network units.
         amount:
           type: number
-          description: The amount to deposit or withdraw in atomic network units
+          description: The amount to deposit or withdraw in atomic network units.
         currency:
           type: string
-          description: The type of currency
+          description: The type of currency.
         fee:
           type: integer
-          description: The fee of the transaction
+          description: The fee of the transaction.
         hashes:
           type: array
-          description: Blockchain transaction hashes
+          description: Blockchain transaction hashes.
           items:
             type: string
+        destination:
+          type: string
+          description: The address to which the funds are being sent.
+        source:
+          type: string
+          nullable: true
+          description: The address from which the funds are being sent.
+        wallet_id:
+          type: string
+          description: The identifier of the wallet involved in the transaction.
         created_at:
           type: string
           format: date-time
-          description: The time this transaction was created
+          description: The time this transaction was created.
         updated_at:
           type: string
           format: date-time
-          description: The time this transaction was updated
+          description: The time this transaction was updated.
     transaction_type:
       type: string
       enum:
@@ -1091,6 +1104,46 @@ components:
           type: string
           format: int64
           description: The current withdrawable balance in atomic network units
+        bondable_balance:
+          type: string
+          format: int64
+          description: The current bondable balance in atomic network units
+        bondable_balance_whole_units:
+          type: number
+          fomat: double
+          description: The bondable balance in whole network unitsv
+        bonded_balance:
+          type: string
+          format: int64
+          description: The current bonded balance in atomic network units
+        bonded_balance_whole_units:
+          type: number
+          fomat: double
+          description: The bonded balance in whole network units
+        unbounding_balance:
+          type: string
+          format: int64
+          description: The current unbounding balance in atomic network units
+        unbounding_balance_whole_units:
+          type: number
+          fomat: double
+          description: The unbounding balance in whole network units
+        unvested_balance:
+          type: string
+          format: int64
+          description: The current unvested balance in atomic network units
+        unvested_balance_whole_units:
+          type: number
+          fomat: double
+          description: The unvested balance in whole network units
+        reserved_balance:
+          type: string
+          format: int64
+          description: The current reserved balance in atomic network units
+        reserved_balance_whole_units:
+          type: number
+          fomat: double
+          description: The reserved balance in whole network units
         cold_address:
           type: string
           description: The cold crypto address
