@@ -17,12 +17,13 @@ namespace Trakx.Coinbase.Custody.ApiClient.Tests.Integration
 
 
         [Fact]
-        public async Task ListAccounts_and_GetAccount_should_return_results()
+        public async Task GetTransactionsAsync_should_return_results()
         {
             var transactions = (await _transactionsClient.GetTransactionsAsync()).Result;
    
-            Logger.Information("Found address transactions: {transactions}", 
-                JsonSerializer.Serialize(transactions));
+            Logger.Information("Found transactions: {transactions}", 
+                JsonSerializer.Serialize(transactions, new JsonSerializerOptions {WriteIndented = true}));
+
             transactions.Data.Count.Should().BeGreaterOrEqualTo(1);
         }
 

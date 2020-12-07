@@ -2496,13 +2496,17 @@ namespace Trakx.Coinbase.Custody.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Currency 
     {
-        /// <summary>The type of currency</summary>
+        /// <summary>The type of currency.</summary>
         [Newtonsoft.Json.JsonProperty("symbol", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Symbol { get; set; }
     
-        /// <summary>The name of the currency</summary>
+        /// <summary>The name of the currency.</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
+    
+        /// <summary>Number of decimals supported by the currency.</summary>
+        [Newtonsoft.Json.JsonProperty("decimals", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Decimals { get; set; }
     
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
     
@@ -2541,7 +2545,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Transaction 
     {
-        /// <summary>The ID of the transaction</summary>
+        /// <summary>The ID of the transaction.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
     
@@ -2553,31 +2557,43 @@ namespace Trakx.Coinbase.Custody.ApiClient
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public Transaction_state State { get; set; }
     
-        /// <summary>The amount to deposit or withdraw in whole network units</summary>
+        /// <summary>The amount to deposit or withdraw in whole network units.</summary>
         [Newtonsoft.Json.JsonProperty("amount_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double Amount_whole_units { get; set; }
     
-        /// <summary>The amount to deposit or withdraw in atomic network units</summary>
+        /// <summary>The amount to deposit or withdraw in atomic network units.</summary>
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double Amount { get; set; }
     
-        /// <summary>The type of currency</summary>
+        /// <summary>The type of currency.</summary>
         [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Currency { get; set; }
     
-        /// <summary>The fee of the transaction</summary>
+        /// <summary>The fee of the transaction.</summary>
         [Newtonsoft.Json.JsonProperty("fee", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Fee { get; set; }
     
-        /// <summary>Blockchain transaction hashes</summary>
+        /// <summary>Blockchain transaction hashes.</summary>
         [Newtonsoft.Json.JsonProperty("hashes", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<string> Hashes { get; set; }
     
-        /// <summary>The time this transaction was created</summary>
+        /// <summary>The address to which the funds are being sent.</summary>
+        [Newtonsoft.Json.JsonProperty("destination", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Destination { get; set; }
+    
+        /// <summary>The address from which the funds are being sent.</summary>
+        [Newtonsoft.Json.JsonProperty("source", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Source { get; set; }
+    
+        /// <summary>The identifier of the wallet involved in the transaction.</summary>
+        [Newtonsoft.Json.JsonProperty("wallet_id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Wallet_id { get; set; }
+    
+        /// <summary>The time this transaction was created.</summary>
         [Newtonsoft.Json.JsonProperty("created_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset Created_at { get; set; }
     
-        /// <summary>The time this transaction was updated</summary>
+        /// <summary>The time this transaction was updated.</summary>
         [Newtonsoft.Json.JsonProperty("updated_at", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset Updated_at { get; set; }
     
@@ -2874,6 +2890,46 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// <summary>The current withdrawable balance in atomic network units</summary>
         [Newtonsoft.Json.JsonProperty("withdrawable_balance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Withdrawable_balance { get; set; }
+    
+        /// <summary>The current bondable balance in atomic network units</summary>
+        [Newtonsoft.Json.JsonProperty("bondable_balance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Bondable_balance { get; set; }
+    
+        /// <summary>The bondable balance in whole network unitsv</summary>
+        [Newtonsoft.Json.JsonProperty("bondable_balance_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Bondable_balance_whole_units { get; set; }
+    
+        /// <summary>The current bonded balance in atomic network units</summary>
+        [Newtonsoft.Json.JsonProperty("bonded_balance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Bonded_balance { get; set; }
+    
+        /// <summary>The bonded balance in whole network units</summary>
+        [Newtonsoft.Json.JsonProperty("bonded_balance_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Bonded_balance_whole_units { get; set; }
+    
+        /// <summary>The current unbounding balance in atomic network units</summary>
+        [Newtonsoft.Json.JsonProperty("unbounding_balance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Unbounding_balance { get; set; }
+    
+        /// <summary>The unbounding balance in whole network units</summary>
+        [Newtonsoft.Json.JsonProperty("unbounding_balance_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Unbounding_balance_whole_units { get; set; }
+    
+        /// <summary>The current unvested balance in atomic network units</summary>
+        [Newtonsoft.Json.JsonProperty("unvested_balance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Unvested_balance { get; set; }
+    
+        /// <summary>The unvested balance in whole network units</summary>
+        [Newtonsoft.Json.JsonProperty("unvested_balance_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Unvested_balance_whole_units { get; set; }
+    
+        /// <summary>The current reserved balance in atomic network units</summary>
+        [Newtonsoft.Json.JsonProperty("reserved_balance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Reserved_balance { get; set; }
+    
+        /// <summary>The reserved balance in whole network units</summary>
+        [Newtonsoft.Json.JsonProperty("reserved_balance_whole_units", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Reserved_balance_whole_units { get; set; }
     
         /// <summary>The cold crypto address</summary>
         [Newtonsoft.Json.JsonProperty("cold_address", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
