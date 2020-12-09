@@ -6,7 +6,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
 {
     public partial class Pagination
     {
-        public static readonly Pagination Default = new Pagination();
+        public static readonly Pagination Default = new Pagination{Limit = 10};
 
         public Pagination Clone()
         {
@@ -35,8 +35,9 @@ namespace Trakx.Coinbase.Custody.ApiClient
         /// </summary>
         internal async IAsyncEnumerable<T> EnumerateAsynchronously<T>(Func<Pagination, Task<IPagedResponse<T>>> fetchPage)
         {
+            if(Limit <= 0) throw new InvalidOperationException($"unable to enumerate with a null or negative {nameof(Limit)}.");
             IPagedResponse<T> page;
-            var nextPagination = new Pagination{Before = Before, Limit = Limit, After = After};
+            var nextPagination = Clone();
             do
             {
                 try

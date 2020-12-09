@@ -67,15 +67,15 @@ namespace Trakx.Coinbase.Custody.ApiClient.Tests.Unit
         }
 
 
-        [Fact] public async Task GetCurrencies_should_work_onn_empty_sets()
+        [Fact] public async Task GetCurrencies_should_work_on_empty_sets()
         {
             var response = new ResponseWrapper<Currencies>(200, null, new Currencies { Data = new List<Currency>() });
             _client.GetCurrenciesAsync().ReturnsForAnyArgs(response);
 
-            var allCurrencies = await _client.GetCurrencies(new Pagination { Limit = 10 }).ToListAsync();
+            var allCurrencies = _client.GetCurrencies();
 
+            (await allCurrencies.FirstOrDefaultAsync()).Should().BeNull();
             await _client.ReceivedWithAnyArgs(1).GetCurrenciesAsync();
-            allCurrencies.Count.Should().Be(0);
         }
     }
 }
