@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
@@ -63,6 +64,18 @@ namespace Trakx.Coinbase.Custody.ApiClient.Tests.Unit
 
             await _client.ReceivedWithAnyArgs(2).GetCurrenciesAsync();
             allCurrencies.Count.Should().Be(15);
+        }
+
+
+        [Fact] public async Task GetCurrencies_should_work_onn_empty_sets()
+        {
+            var response = new ResponseWrapper<Currencies>(200, null, new Currencies { Data = new List<Currency>() });
+            _client.GetCurrenciesAsync().ReturnsForAnyArgs(response);
+
+            var allCurrencies = await _client.GetCurrencies(new Pagination { Limit = 10 }).ToListAsync();
+
+            await _client.ReceivedWithAnyArgs(1).GetCurrenciesAsync();
+            allCurrencies.Count.Should().Be(0);
         }
     }
 }
