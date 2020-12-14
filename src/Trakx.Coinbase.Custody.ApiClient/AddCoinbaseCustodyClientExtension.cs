@@ -15,29 +15,28 @@ namespace Trakx.Coinbase.Custody.ApiClient
             this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
-            services.Configure<CoinbaseCustodyApiConfiguration>(
-                configuration.GetSection(nameof(CoinbaseCustodyApiConfiguration)));
-            AddCommonDependencies(services);
+            var apiConfig = configuration.GetSection(nameof(CoinbaseCustodyApiConfiguration)).Get<CoinbaseCustodyApiConfiguration>();
+            AddCoinbaseCustodyClient(services, apiConfig);
 
             return services;
         }
 
         public static IServiceCollection AddCoinbaseCustodyClient(
-            this IServiceCollection services, CoinbaseCustodyApiConfiguration custodyApiConfiguration)
+            this IServiceCollection services, CoinbaseCustodyApiConfiguration apiConfiguration)
         {
-            var options = Options.Create(custodyApiConfiguration);
+            var options = Options.Create(apiConfiguration);
             services.AddSingleton(options);
             
-            AddCommonDependencies(services);
+            AddCommonDependencies(services, apiConfiguration);
 
             return services;
         }
 
-        private static void AddCommonDependencies(IServiceCollection services)
+        private static void AddCommonDependencies(IServiceCollection services, CoinbaseCustodyApiConfiguration apiConfiguration)
         {
             services.AddSingleton<ClientConfigurator>();
             services.AddSingleton<ICredentialsProvider, ApiKeyCredentialsProvider>();
-            AddClients(services);
+            AddClients(services, apiConfiguration);
         }
 
         private static void LogFailure(ILogger logger, DelegateResult<HttpResponseMessage> result, TimeSpan timeSpan, int retryCount, Context context)
