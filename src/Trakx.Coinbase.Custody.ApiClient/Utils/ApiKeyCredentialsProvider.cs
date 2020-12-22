@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Options;
 using Serilog;
+using Trakx.Utils.Api;
 
 namespace Trakx.Coinbase.Custody.ApiClient.Utils
 {

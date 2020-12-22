@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Polly;
 using Serilog;
 using Trakx.Coinbase.Custody.ApiClient.Utils;
+using Trakx.Utils.Api;
 
 namespace Trakx.Coinbase.Custody.ApiClient
 {
