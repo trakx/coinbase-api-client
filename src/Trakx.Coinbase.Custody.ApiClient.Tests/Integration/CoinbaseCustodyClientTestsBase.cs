@@ -36,8 +36,8 @@ namespace Trakx.Coinbase.Custody.ApiClient.Tests.Integration
         {
             var configuration = new CoinbaseCustodyApiConfiguration()
             {
-                AccessKey = Secrets.AccessKey,
-                PassPhrase = Secrets.PassPhrase,
+                AccessKey = new Secrets().AccessKey,
+                PassPhrase = new Secrets().PassPhrase,
                 BaseUrl = "https://api.custody.coinbase.com"
             };
 
