@@ -7,21 +7,18 @@ namespace Trakx.Coinbase.Custody.ApiClient
     {
 #nullable disable
         [Required]
-        [SecretEnvironmentVariable("CoinbaseCustodyApiConfiguration__BaseUrl")]
         public string BaseUrl { get; set; }
 
         [Required]
-        [SecretEnvironmentVariable("CoinbaseCustodyApiConfiguration__AccessKey")]
+        [SecretEnvironmentVariable]
         public string AccessKey { get; set; }
 
         [Required]
-        [SecretEnvironmentVariable("CoinbaseCustodyApiConfiguration__PassPhrase")] 
+        [SecretEnvironmentVariable] 
         public string PassPhrase { get; set; }
 
-        [SecretEnvironmentVariable("CoinbaseCustodyApiConfiguration__InitialRetryDelayInMilliseconds")]
         public int? InitialRetryDelayInMilliseconds { get; set; }
 
-        [SecretEnvironmentVariable("CoinbaseCustodyApiConfiguration__MaxRetryCount")]
         public int? MaxRetryCount { get; set; }
 #nullable restore
     }
