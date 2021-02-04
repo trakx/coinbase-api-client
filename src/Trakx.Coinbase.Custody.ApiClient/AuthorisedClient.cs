@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Trakx.Coinbase.Custody.ApiClient.Utils;
+using Trakx.Utils.Apis;
 
 namespace Trakx.Coinbase.Custody.ApiClient
 {

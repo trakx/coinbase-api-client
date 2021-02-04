@@ -1,25 +1,15 @@
-﻿using System;
-using System.IO;
+﻿using Trakx.Utils.Attributes;
+using Trakx.Utils.Testing;
 
 namespace Trakx.Coinbase.Custody.ApiClient.Tests
 {
-    public static class Secrets
+    public record Secrets : SecretsBase
     {
-        static Secrets()
-        {
-            var srcPath = new DirectoryInfo(Environment.CurrentDirectory).Parent?.Parent?.Parent?.Parent;
-            try
-            {
-                DotNetEnv.Env.Load(Path.Combine(srcPath?.FullName ?? string.Empty, ".env"));
-            }
-            catch (Exception)
-            {
-                // Fail to load the file on the CI pipeline, it should have environment variables defined.
-            }
-        }
+        [SecretEnvironmentVariable(nameof(CoinbaseCustodyApiConfiguration), nameof(CoinbaseCustodyApiConfiguration.AccessKey))]
+        public string AccessKey { get; init; }
 
-        public static string AccessKey => Environment.GetEnvironmentVariable("CoinbaseCustodyApiConfiguration__AccessKey")!;
-        public static string PassPhrase => Environment.GetEnvironmentVariable("CoinbaseCustodyApiConfiguration__PassPhrase")!;
+        [SecretEnvironmentVariable(nameof(CoinbaseCustodyApiConfiguration), nameof(CoinbaseCustodyApiConfiguration.PassPhrase))]
+        public string PassPhrase { get; init; }
     }
     
 }

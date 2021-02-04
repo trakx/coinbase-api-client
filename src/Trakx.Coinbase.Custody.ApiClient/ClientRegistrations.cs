@@ -17,7 +17,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
                 medianFirstRetryDelay: TimeSpan.FromMilliseconds(configuration.InitialRetryDelayInMilliseconds ?? 100), 
                 retryCount: configuration.MaxRetryCount ?? 10, fastFirst: true);
                                     
-            services.AddHttpClient<IAddressBookClient, AddressBookClient>()
+            services.AddHttpClient<IAddressBookClient, AddressBookClient>("Trakx.Coinbase.Custody.ApiClient.AddressBookClient")
                 .AddPolicyHandler((s, request) => 
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
@@ -32,7 +32,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
                     .WithPolicyKey("Trakx.Coinbase.Custody.ApiClient.AddressBookClient"));
 
                                 
-            services.AddHttpClient<IAddressesClient, AddressesClient>()
+            services.AddHttpClient<IAddressesClient, AddressesClient>("Trakx.Coinbase.Custody.ApiClient.AddressesClient")
                 .AddPolicyHandler((s, request) => 
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
@@ -47,7 +47,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
                     .WithPolicyKey("Trakx.Coinbase.Custody.ApiClient.AddressesClient"));
 
                                 
-            services.AddHttpClient<IAddressesClient, AddressesClient>()
+            services.AddHttpClient<IAddressesClient, AddressesClient>("Trakx.Coinbase.Custody.ApiClient.AddressesClient")
                 .AddPolicyHandler((s, request) => 
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
@@ -62,7 +62,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
                     .WithPolicyKey("Trakx.Coinbase.Custody.ApiClient.AddressesClient"));
 
                                 
-            services.AddHttpClient<ICurrenciesClient, CurrenciesClient>()
+            services.AddHttpClient<ICurrenciesClient, CurrenciesClient>("Trakx.Coinbase.Custody.ApiClient.CurrenciesClient")
                 .AddPolicyHandler((s, request) => 
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
@@ -77,7 +77,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
                     .WithPolicyKey("Trakx.Coinbase.Custody.ApiClient.CurrenciesClient"));
 
                                 
-            services.AddHttpClient<ITransactionsClient, TransactionsClient>()
+            services.AddHttpClient<ITransactionsClient, TransactionsClient>("Trakx.Coinbase.Custody.ApiClient.TransactionsClient")
                 .AddPolicyHandler((s, request) => 
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
@@ -92,7 +92,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
                     .WithPolicyKey("Trakx.Coinbase.Custody.ApiClient.TransactionsClient"));
 
                                 
-            services.AddHttpClient<IUsersClient, UsersClient>()
+            services.AddHttpClient<IUsersClient, UsersClient>("Trakx.Coinbase.Custody.ApiClient.UsersClient")
                 .AddPolicyHandler((s, request) => 
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()
@@ -107,7 +107,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
                     .WithPolicyKey("Trakx.Coinbase.Custody.ApiClient.UsersClient"));
 
                                 
-            services.AddHttpClient<IWalletsClient, WalletsClient>()
+            services.AddHttpClient<IWalletsClient, WalletsClient>("Trakx.Coinbase.Custody.ApiClient.WalletsClient")
                 .AddPolicyHandler((s, request) => 
                     Policy<HttpResponseMessage>
                     .Handle<ApiException>()

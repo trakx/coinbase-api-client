@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using Trakx.Coinbase.Custody.ApiClient.Utils;
+using Trakx.Utils.Apis;
 
 namespace Trakx.Coinbase.Custody.ApiClient
 {
