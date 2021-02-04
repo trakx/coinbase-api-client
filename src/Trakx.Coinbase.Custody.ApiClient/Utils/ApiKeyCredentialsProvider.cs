@@ -6,7 +6,8 @@ using Trakx.Utils.Apis;
 
 namespace Trakx.Coinbase.Custody.ApiClient.Utils
 {
-    public class ApiKeyCredentialsProvider : ICredentialsProvider
+    public interface ICoinbaseCredentialsProvider : ICredentialsProvider { };
+    public class ApiKeyCredentialsProvider : ICoinbaseCredentialsProvider
     {
         internal const string AccessKeyHeader = "CB-ACCESS-KEY";
         internal const string PassPhraseHeader = "CB-ACCESS-PASSPHRASE";
