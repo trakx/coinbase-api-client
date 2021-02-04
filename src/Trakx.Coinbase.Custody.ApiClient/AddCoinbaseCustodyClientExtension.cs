@@ -36,7 +36,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
         private static void AddCommonDependencies(IServiceCollection services, CoinbaseCustodyApiConfiguration apiConfiguration)
         {
             services.AddSingleton<ClientConfigurator>();
-            services.AddSingleton<ICredentialsProvider, ApiKeyCredentialsProvider>();
+            services.AddSingleton<ICoinbaseCredentialsProvider, ApiKeyCredentialsProvider>();
             AddClients(services, apiConfiguration);
         }
 

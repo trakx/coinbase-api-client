@@ -34,10 +34,11 @@ namespace Trakx.Coinbase.Custody.ApiClient.Tests.Integration
 
         public CoinbaseApiFixture()
         {
+            var secrets = new Secrets();
             var configuration = new CoinbaseCustodyApiConfiguration()
             {
-                AccessKey = new Secrets().AccessKey,
-                PassPhrase = new Secrets().PassPhrase,
+                AccessKey = secrets.AccessKey,
+                PassPhrase = secrets.PassPhrase,
                 BaseUrl = "https://api.custody.coinbase.com"
             };
 

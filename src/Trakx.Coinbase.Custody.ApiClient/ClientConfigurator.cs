@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
+using Trakx.Coinbase.Custody.ApiClient.Utils;
 using Trakx.Utils.Apis;
 
 namespace Trakx.Coinbase.Custody.ApiClient
 {
     internal class ClientConfigurator
     {
-        private readonly ICredentialsProvider _credentialsProvider;
+        private readonly ICoinbaseCredentialsProvider _credentialsProvider;
 
-        public ClientConfigurator(ICredentialsProvider credentialsProvider, 
+        public ClientConfigurator(ICoinbaseCredentialsProvider credentialsProvider, 
             IOptions<CoinbaseCustodyApiConfiguration> configuration)
         {
             _credentialsProvider = credentialsProvider;
@@ -16,7 +17,7 @@ namespace Trakx.Coinbase.Custody.ApiClient
          
         public CoinbaseCustodyApiConfiguration CustodyApiConfiguration { get; }
 
-        public ICredentialsProvider GetCredentialProvider()
+        public ICoinbaseCredentialsProvider GetCredentialProvider()
         {
             return _credentialsProvider;
         }
