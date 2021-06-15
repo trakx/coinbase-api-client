@@ -7,12 +7,12 @@ using Xunit.Abstractions;
 namespace Trakx.Coinbase.Custody.ApiClient.Tests.Integration
 {
     [Collection(nameof(ApiTestCollection))]
-    public class CoinbaseClientTestsBase
+    public abstract class CoinbaseClientTestsBase
     {
-        protected ServiceProvider ServiceProvider;
-        protected ILogger Logger;
+        protected readonly ServiceProvider ServiceProvider;
+        protected readonly ILogger Logger;
 
-        public CoinbaseClientTestsBase(CoinbaseApiFixture apiFixture, ITestOutputHelper output)
+        protected CoinbaseClientTestsBase(CoinbaseApiFixture apiFixture, ITestOutputHelper output)
         {
             Logger = new LoggerConfiguration().WriteTo.TestOutput(output).CreateLogger();
 
@@ -30,7 +30,7 @@ namespace Trakx.Coinbase.Custody.ApiClient.Tests.Integration
 
     public class CoinbaseApiFixture : IDisposable
     {
-        public ServiceProvider ServiceProvider;
+        public readonly ServiceProvider ServiceProvider;
 
         public CoinbaseApiFixture()
         {

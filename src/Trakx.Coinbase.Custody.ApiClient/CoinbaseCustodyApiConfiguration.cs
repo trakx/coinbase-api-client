@@ -3,23 +3,20 @@ using Trakx.Utils.Attributes;
 
 namespace Trakx.Coinbase.Custody.ApiClient
 {
-    public class CoinbaseCustodyApiConfiguration
+    public record CoinbaseCustodyApiConfiguration
     {
 #nullable disable
-        [Required]
-        public string BaseUrl { get; set; }
+        public string BaseUrl { get; init; }
 
-        [Required]
         [SecretEnvironmentVariable]
-        public string AccessKey { get; set; }
+        public string AccessKey { get; init; }
 
-        [Required]
         [SecretEnvironmentVariable] 
-        public string PassPhrase { get; set; }
+        public string PassPhrase { get; init; }
 
-        public int? InitialRetryDelayInMilliseconds { get; set; }
+        public int? InitialRetryDelayInMilliseconds { get; init; }
 
-        public int? MaxRetryCount { get; set; }
+        public int? MaxRetryCount { get; init; }
 #nullable restore
     }
 }
