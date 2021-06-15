@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Trakx.Utils.Apis;
@@ -31,6 +32,13 @@ namespace Trakx.Coinbase.Custody.ApiClient.Utils
             msg.Headers.Add(PassPhraseHeader, _configuration.PassPhrase);
             Logger.Verbose("Headers added");
         }
+
+        public Task AddCredentialsAsync(HttpRequestMessage msg)
+        {
+            AddCredentials(msg);
+            return Task.CompletedTask;
+        }
+
         #endregion
     }
 }
