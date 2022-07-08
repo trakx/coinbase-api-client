@@ -8,10 +8,10 @@ namespace Trakx.Coinbase.Custody.ApiClient
 #nullable disable
         public string BaseUrl { get; init; }
 
-        [SecretEnvironmentVariable]
+        [SecretEnvironmentVariable, AwsParameter]
         public string AccessKey { get; init; }
 
-        [SecretEnvironmentVariable] 
+        [SecretEnvironmentVariable, AwsParameter]
         public string PassPhrase { get; init; }
 
         public int? InitialRetryDelayInMilliseconds { get; init; }

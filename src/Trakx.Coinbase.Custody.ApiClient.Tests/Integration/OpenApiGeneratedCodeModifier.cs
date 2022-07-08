@@ -8,10 +8,10 @@ namespace Trakx.Coinbase.Custody.ApiClient.Tests.Integration
         {
         }
     }
-    
-    public class EnvFileDocumentationUpdater : Trakx.Utils.Testing.EnvFileDocumentationUpdaterBase
+
+    public class ReadmeDocumentationUpdater : Trakx.Utils.Testing.ReadmeUpdater.ReadmeDocumentationUpdaterBase
     {
-        public EnvFileDocumentationUpdater(ITestOutputHelper output) : base(output)
+        public ReadmeDocumentationUpdater(ITestOutputHelper output) : base(output)
         {
         }
     }

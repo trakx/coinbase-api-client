@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Trakx.Utils.Testing;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -34,13 +35,12 @@ namespace Trakx.Coinbase.Custody.ApiClient.Tests.Integration
 
         public CoinbaseApiFixture()
         {
-            var secrets = new Secrets();
-            var configuration = new CoinbaseCustodyApiConfiguration()
-            {
-                AccessKey = secrets.AccessKey,
-                PassPhrase = secrets.PassPhrase,
-                BaseUrl = "https://api.custody.coinbase.com"
-            };
+            var configuration = ConfigurationHelper
+                    .GetConfigurationFromAws<CoinbaseCustodyApiConfiguration>()
+                with
+                {
+                    BaseUrl = "https://api.custody.coinbase.com"
+                };
 
             var serviceCollection = new ServiceCollection();
 
